@@ -26,13 +26,10 @@ class EventsController extends JController
 	{
 		require_once JPATH_COMPONENT.'/helpers/events.php';
 
-		// Load the submenu.
-		EventsHelper::addSubmenu(JRequest::getCmd('view', 'events'));
+		$view		= JFactory::getApplication()->input->getCmd('view', 'events');
+        JFactory::getApplication()->input->set('view', $view);
 
-		$view		= JRequest::getCmd('view', 'events');
-        JRequest::setVar('view', $view);
-
-		parent::display();
+		parent::display($cachable, $urlparams);
 
 		return $this;
 	}

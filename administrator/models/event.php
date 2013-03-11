@@ -111,7 +111,7 @@ class EventsModelevent extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (@$table->ordering === '') {
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__events_');
+				$db->setQuery('SELECT MAX(ordering) FROM #__events_event');
 				$max = $db->loadResult();
 				$table->ordering = $max+1;
 			}

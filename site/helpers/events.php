@@ -7,6 +7,8 @@
  * @author      Created by com_combuilder - http://www.notwebdesign.com
  */
 
+defined('_JEXEC') or die;
+
 abstract class EventsHelper
 {
 	public static function myFunction()

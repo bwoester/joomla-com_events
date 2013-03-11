@@ -25,6 +25,10 @@ class EventsViewEvents extends JView
   /* @var $eventsModel EventsModelEvents */
   public $eventsModel;
 
+  /**
+   * @todo only return published events (depending on user rights?)
+   * @param type $tpl
+   */
 	function display($tpl = null)
 	{
     // Set the MIME type for JSON output.

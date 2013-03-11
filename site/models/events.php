@@ -216,6 +216,12 @@ class EventsModelEvents extends JModel
     return $this->getEvents( $from, $to );
   }
 
+  /**
+   * @todo allow to filter by category
+   * @param DateTime $from
+   * @param DateTime $to
+   * @return array
+   */
   public function getEvents( DateTime $from, DateTime $to )
   {
     $strFrom  = $from->format( self::MYSQL_FORMAT );
@@ -226,7 +232,7 @@ class EventsModelEvents extends JModel
     $db     = $this->getDbo();
     $query  = $db->getQuery(true);
     $query->select( 'e.*' );
-    $query->from('#__events_ as e');
+    $query->from('#__events_event as e');
     $query->where("time_start >= '{$strFrom}' AND time_start < '{$strTo}'");
     $query->order('time_start');
 

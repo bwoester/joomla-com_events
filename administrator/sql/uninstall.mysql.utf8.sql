@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS `#__events_`;
+DROP TABLE IF EXISTS `#__events_event`;

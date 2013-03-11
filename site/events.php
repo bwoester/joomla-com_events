@@ -14,5 +14,5 @@ jimport('joomla.application.component.controller');
 
 // Execute the task.
 $controller	= JController::getInstance('Events');
-$controller->execute(JRequest::getVar('task',''));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

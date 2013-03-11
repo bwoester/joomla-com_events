@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @version     1.0.0
  * @package     com_events
@@ -6,50 +7,51 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Created by com_combuilder - http://www.notwebdesign.com
  */
-
 // No direct access
 defined('_JEXEC') or die;
 
 /**
  * Events helper.
  */
-class EventsHelper
-{
-	/**
-	 * Configure the Linkbar.
-	 */
-	public static function addSubmenu($vName = '')
-	{
+class EventsHelper {
 
-		JSubMenuHelper::addEntry(
-			JText::_('COM_EVENTS_TITLE_EVENTS'),
-			'index.php?option=com_events&view=events',
-			$vName == 'events'
-		);
+  /**
+   * Configure the Linkbar.
+   */
+  public static function addSubmenu($vName = '') {
+    JSubMenuHelper::addEntry(
+            JText::_('COM_EVENTS_TITLE_EVENTS'), 'index.php?option=com_events&view=events', $vName == 'events'
+    );
+    JSubMenuHelper::addEntry(
+            'Categories (Category)', "index.php?option=com_categories&extension=com_events.catid", $vName == 'categories'
+    );
 
-	}
+    if ($vName == 'categories.catid') {
+      JToolBarHelper::title('Events: Categories (Category)');
+    }
+  }
 
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @return	JObject
-	 * @since	1.6
-	 */
-	public static function getActions()
-	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+  /**
+   * Gets a list of the actions that can be performed.
+   *
+   * @return	JObject
+   * @since	1.6
+   */
+  public static function getActions() {
+    $user = JFactory::getUser();
+    $result = new JObject;
 
-		$assetName = 'com_events';
+    $assetName = 'com_events';
 
-		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
-		);
+    $actions = array(
+        'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
+    );
 
-		foreach ($actions as $action) {
-			$result->set($action,	$user->authorise($action, $assetName));
-		}
+    foreach ($actions as $action) {
+      $result->set($action, $user->authorise($action, $assetName));
+    }
 
-		return $result;
-	}
+    return $result;
+  }
+
 }

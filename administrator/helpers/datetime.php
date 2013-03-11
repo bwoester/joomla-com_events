@@ -71,7 +71,7 @@ class ComEventsDatetime
     $attribs['title'] = (0!==(int)$value ? JHtml::_('date',$value):'');
     $attribs['name']  = $name;
     $attribs['id']    = $id;
-    $attribs['value'] = htmlspecialchars( $value, ENT_COMPAT, 'UTF-8' );
+    $attribs['value'] = htmlspecialchars( ($value === '0000-00-00 00:00:00' ? '' : $value), ENT_COMPAT, 'UTF-8' );
 
     $image = $readonly ? '' : JHtml::_(
       'image','system/calendar.png',

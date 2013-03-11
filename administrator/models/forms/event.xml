@@ -22,6 +22,35 @@
       filter="safehtml" />
 
     <field
+      name="catid"
+      type="category"
+      label="COM_EVENTS_FORM_LBL_EVENT_CATID"
+      description="COM_EVENTS_FORM_DESC_EVENT_CATID" 
+      required="true" 
+      extension="com_events.catid"
+      filter="raw" /> 
+ 
+    <!-- TODO: how to rename root categorie? Shouldn't be "Root" but something like "- All categories -" -->
+		<field
+      name="filter_catid"
+      type="category"
+      label="COM_EVENTS_FORM_LBL_EVENT_CATID"
+      description="COM_EVENTS_FORM_DESC_EVENT_CATID"
+      extension="com_events.catid"
+      show_root="true"
+      onchange="this.form.submit();" /> 
+    
+    <field
+      name="time_start"
+      type="datetime"
+      class="inputbox"
+      label="COM_EVENTS_FORM_LBL_EVENT_TIME_START"
+      description="COM_EVENTS_FORM_DESC_EVENT_TIME_START"
+      required="true"
+      filter="safehtml"
+      format="%Y-%m-%d %H:%i" />
+   
+    <field
       name="description"
       type="editor"
       buttons="true"
@@ -38,15 +67,6 @@
       label="COM_EVENTS_FORM_LBL_EVENT_LOCATION"
       description="COM_EVENTS_FORM_DESC_EVENT_LOCATION"
       filter="safehtml" />
-
-    <field
-      name="time_start"
-      type="datetime"
-      class="inputbox"
-      label="COM_EVENTS_FORM_LBL_EVENT_TIME_START"
-      description="COM_EVENTS_FORM_DESC_EVENT_TIME_START"
-      filter="safehtml"
-      format="%Y-%m-%d %H:%i" />
 
     <field
       name="time_end"

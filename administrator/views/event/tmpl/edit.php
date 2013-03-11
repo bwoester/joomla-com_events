@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -30,48 +31,75 @@ JHtml::_('behavior.formvalidation');
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT'); ?></legend>
 			<ul class="adminformlist">
-
             
-			<li><?php echo $this->form->getLabel('id'); ?>
-			<?php echo $this->form->getInput('id'); ?></li>
+        <li>
+          <?php echo $this->form->getLabel('catid'); ?>
+          <?php echo $this->form->getInput('catid'); ?>
+        </li>
 
-            
-			<li><?php echo $this->form->getLabel('title'); ?>
-			<?php echo $this->form->getInput('title'); ?></li>
+        <li>
+          <?php echo $this->form->getLabel('state'); ?>
+          <?php echo $this->form->getInput('state'); ?>
+        </li>
+        
+        <li>
+          <?php echo $this->form->getLabel('title'); ?>
+          <?php echo $this->form->getInput('title'); ?>
+        </li>
 
-            
-			<li><?php echo $this->form->getLabel('description'); ?>
-			<?php echo $this->form->getInput('description'); ?></li>
+        <li>
+          <?php echo $this->form->getLabel('time_start'); ?>
+          <?php echo $this->form->getInput('time_start'); ?>
+        </li>
 
-            
-			<li><?php echo $this->form->getLabel('location'); ?>
-			<?php echo $this->form->getInput('location'); ?></li>
+        <li>
+          <?php echo $this->form->getLabel('time_end'); ?>
+          <?php echo $this->form->getInput('time_end'); ?>
+        </li>
+        
+        <li>
+          <?php echo $this->form->getLabel('location'); ?>
+          <?php echo $this->form->getInput('location'); ?>
+        </li>
+        
+        <li>
+          <?php echo $this->form->getLabel('id'); ?>
+          <?php echo $this->form->getInput('id'); ?>
+        </li>
+        
+      </ul>
+    </fieldset>
+    
+    
+    
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT_DETAILS'); ?></legend>
+			<ul class="adminformlist">
 
-            
-			<li><?php echo $this->form->getLabel('time_start'); ?>
-			<?php echo $this->form->getInput('time_start'); ?></li>
+        <li>
+          <?php echo $this->form->getLabel('meeting_place'); ?>
+          <?php echo $this->form->getInput('meeting_place'); ?>
+        </li>
 
-            
-			<li><?php echo $this->form->getLabel('time_end'); ?>
-			<?php echo $this->form->getInput('time_end'); ?></li>
+        <li>
+          <?php echo $this->form->getLabel('meeting_time'); ?>
+          <?php echo $this->form->getInput('meeting_time'); ?>
+        </li>
+        
+        <li>
+          <?php echo $this->form->getLabel('description'); ?>
+          <?php echo $this->form->getInput('description'); ?>
+        </li>
 
-            
-			<li><?php echo $this->form->getLabel('meeting_place'); ?>
-			<?php echo $this->form->getInput('meeting_place'); ?></li>
+      </ul>
+    </fieldset>
+      
+    <?php echo $this->form->getLabel('checked_out'); ?>
+    <?php echo $this->form->getInput('checked_out'); ?>
+      
+    <?php echo $this->form->getLabel('checked_out_time'); ?>
+    <?php echo $this->form->getInput('checked_out_time'); ?>
 
-            
-			<li><?php echo $this->form->getLabel('meeting_time'); ?>
-			<?php echo $this->form->getInput('meeting_time'); ?></li>
-
-            
-
-            <li><?php echo $this->form->getLabel('state'); ?>
-                    <?php echo $this->form->getInput('state'); ?></li><li><?php echo $this->form->getLabel('checked_out'); ?>
-                    <?php echo $this->form->getInput('checked_out'); ?></li><li><?php echo $this->form->getLabel('checked_out_time'); ?>
-                    <?php echo $this->form->getInput('checked_out_time'); ?></li>
-
-            </ul>
-		</fieldset>
 	</div>
 
 

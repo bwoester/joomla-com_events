@@ -21,8 +21,11 @@
 		label="JCONFIG_PERMISSIONS_LABEL"
 	>
 
-		<field name="rules" type="rules"
+		<field 
+            name="rules" 
+            type="rules"
 			component="com_events"
+            class="inputbox"
 			filter="rules"
 			validate="rules"
 			label="JCONFIG_PERMISSIONS_LABEL"
@@ -103,4 +106,4 @@ http://docs.joomla.org/Usergroup_parameter_type
 <field name="myusergroups" type="usergroup" default="" label="Select a user group" description="" />
 
 
- -->
+-->
