@@ -53,12 +53,12 @@ class ComEventsDatetime
 				$document = JFactory::getDocument();
 				$document->addScriptDeclaration(
           'window.addEvent( "domready", function() {
-            $("#'.$id.'").AnyTime_picker({
+            jQuery("#'.$id.'").AnyTime_picker({
               format: "'.$format.'",
               firstDOW: '.JFactory::getLanguage()->getFirstDay().'
             });
-            $("#'.$id.'_img").click( function() {
-              $("#'.$id.'").focus();
+            jQuery("#'.$id.'_img").click( function() {
+              jQuery("#'.$id.'").focus();
             });
           });'
         );
