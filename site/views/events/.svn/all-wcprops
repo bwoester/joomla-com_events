@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/repos/j17-com-events/!svn/ver/4/trunk/site/views/events
+END
+view.html.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/j17-com-events/!svn/ver/5/trunk/site/views/events/view.html.php
+END
+view.json.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/repos/j17-com-events/!svn/ver/5/trunk/site/views/events/view.json.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/j17-com-events/!svn/ver/3/trunk/site/views/events/index.html
+END

@@ -1,0 +1,114 @@
+<?php
+/**
+ * @version     1.0.0
+ * @package     com_events
+ * @copyright   Copyright (C) 2011. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Created by com_combuilder - http://www.notwebdesign.com
+ */
+
+// no direct access
+defined('_JEXEC') or die;
+
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+
+/* Some help for the IDE */
+/* @var $this EventsViewEvents */
+/* @var $eventsModel EventsModelEvents */
+
+$eventsModel = $this->eventsModel;
+
+?>
+<<<<<<< .mine
+
+<div class="item-page">
+
+<ul class="actions">
+<?php if (!$this->print) : ?>
+
+  <?php if ($eventsModel->showPrintAction()): ?>
+    <li class="print-icon">
+    <?php echo JHtml::_('icon.print_popup', $eventsModel); ?>
+    </li>
+  <?php endif; ?>
+
+  <li class="calendar-icon">
+    <a href="<?php echo $eventsModel->getLinkCalendar(); ?>">
+      zum Kalender
+    </a>
+  </li>
+
+<?php else : ?>
+  <li>
+  <?php echo JHtml::_('icon.print_screen'); ?>
+  </li>
+<?php endif; ?>
+</ul>
+
+
+
+<p>
+<?php echo $eventsModel->getHeader(); ?>
+</p>
+
+=======
+
+>>>>>>> .r4
+<?php
+<<<<<<< .mine
+//echo '<pre>';
+//print_r($this);
+//echo '</pre>';
+?>
+
+<table>
+  <caption>
+    Die Termine für den Zeitraum
+    <span class="period"><?php echo $eventsModel->getPeriodStart()->format(EventsModelEvents::GERMAN_DATE_FORMAT); ?></span>
+    bis <span class="period"><?php echo DateTimeHelper::substractDays($eventsModel->getPeriodEnd(),1)->format(EventsModelEvents::GERMAN_DATE_FORMAT); ?></span>.
+  </caption>
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Was</th>
+      <th>Wo</th>
+      <th>Begin</th>
+    </tr>
+  </thead>
+<?php foreach ($eventsModel->getEventsForCurrentPeriod() as $eventItem): ?>
+  <tr>
+    <?php
+      $date = new DateTime($eventItem->time_start);
+    ?>
+    <td><?php echo $date->format('d.m.Y'); ?></td>
+    <td><?php echo $eventItem->title; ?></td>
+    <td><?php echo $eventItem->location; ?></td>
+    <td><?php echo $date->format('H:i') . ' Uhr'; ?></td>
+  </tr>
+<?php endforeach; ?>
+</table>
+
+<p>
+<?php echo $eventsModel->getFooter(); ?>
+</p>
+
+<?php if (!$this->print) : ?>
+<ul>
+  <li>
+    <a href="<?php echo $eventsModel->getLinkEarlier(); ?>">
+      <?php echo $eventsModel->getPeriodLength(); ?> Monate zurück
+    </a>
+  </li>
+  <li>
+    <a href="<?php echo $eventsModel->getLinkLater(); ?>">
+      <?php echo $eventsModel->getPeriodLength(); ?> Monate vor
+    </a>
+  </li>
+</ul>
+<?php endif; ?>
+
+</div> <!-- class="item-page" -->=======
+  echo '<pre>';
+  print_r($this);
+  echo '</pre>';
+?>>>>>>>> .r4

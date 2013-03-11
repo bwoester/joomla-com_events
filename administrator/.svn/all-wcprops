@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/repos/j17-com-events/!svn/ver/4/trunk/administrator
+END
+access.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/j17-com-events/!svn/ver/3/trunk/administrator/access.xml
+END
+config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/j17-com-events/!svn/ver/3/trunk/administrator/config.xml
+END
+controller.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/j17-com-events/!svn/ver/3/trunk/administrator/controller.php
+END
+events.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/j17-com-events/!svn/ver/3/trunk/administrator/events.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/j17-com-events/!svn/ver/3/trunk/administrator/index.html
+END

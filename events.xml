@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.6.0" method="upgrade">
+
+  <!--
+  Tutorial about component development:
+  "http://docs.joomla.org/Developing_a_Model-View-Controller_(MVC)_Component_for_Joomla!1.6_-_Part_01"
+  -->
+
+	<name>events</name>
+	<creationDate>2011-09-25</creationDate>
+	<copyright>Copyright (C) 2011. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <author>Benjamin Wöster</author>
+	<authorEmail>benjamin.woester@gmail.com</authorEmail>
+	<authorUrl></authorUrl>
+	<version>1.1.2</version>
+	<description>Create and show upcomming events.</description>
+
+  <!-- Runs on install -->
+	<install>
+    <sql>
+      <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+    </sql>
+  </install>
+
+  <!-- Runs on uninstall -->
+  <uninstall>
+    <sql>
+      <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+    </sql>
+  </uninstall>
+
+	<files folder="site">
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+		<filename>controller.php</filename>
+		<filename>events.php</filename>
+		<filename>index.html</filename>
+		<filename>router.php</filename>
+	</files>
+
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB.com_events.ini</language>
+	</languages>
+
+  <!-- Site Main Media File Copy Section -->
+	<media folder="media" destination="com_events">
+    <folder>anytime</folder>
+    <folder>fullCalendar</folder>
+    <folder>qTip</folder>
+	</media>
+
+	<administration>
+		<menu>COM_EVENTS</menu>
+
+		<submenu>
+			<menu link="option=com_events&amp;view=events" view="events" img="class:events" alt="Events/Events">COM_EVENTS_EVENTS</menu>
+    </submenu>
+
+    <files folder="administrator">
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>events.php</filename>
+			<filename>index.html</filename>
+		</files>
+
+		<languages folder="administrator">
+			<language tag="en-GB">language/en-GB.com_events.ini</language>
+			<language tag="en-GB">language/en-GB.com_events.sys.ini</language>
+		</languages>
+	</administration>
+
+</extension>
+

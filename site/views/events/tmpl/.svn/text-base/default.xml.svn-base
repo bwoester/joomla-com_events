@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  
+  <layout title="COM_EVENTS_EVENTS_VIEW_DEFAULT_TITLE">
+    <message>COM_EVENTS_EVENTS_VIEW_DEFAULT_DESC</message>
+  </layout>
+
+  <!--
+  Might be related to database fields. At least all the things defined here
+  will be stored in table [prefix]_menu.params (json encoded)
+
+  Another valid value for the "name" attribute is "request", which makes the
+  fields required. Their values will then be appended to [prefix]_menu.link as
+  GET-parameters...
+  -->
+  <fields name="params">
+
+    <!-- results in COM_MENUS_DECORATION_FIELDSET_LABEL -->
+    <fieldset name="DECORATION">
+
+      <field  name="header"
+              type="editor"
+              label="COM_EVENTS_EVENTS_FIELD_HEADER_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_HEADER_DESC"
+              class="inputbox"
+              filter="safehtml"
+              buttons="true"
+              hide="readmore,pagebreak"
+              />
+
+      <field  name="footer"
+              type="editor"
+              label="COM_EVENTS_EVENTS_FIELD_FOOTER_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_FOOTER_DESC"
+              class="inputbox"
+              filter="safehtml"
+              buttons="true"
+              hide="readmore,pagebreak"
+              />
+
+    </fieldset>
+
+    <!-- results in COM_MENUS_OPTIONS_FIELDSET_LABEL -->
+    <fieldset name="OPTIONS">
+
+      <field  name="showPrintAction"
+              type="checkbox"
+              label="COM_EVENTS_EVENTS_FIELD_SHOW_PRINT_ACTION_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_SHOW_PRINT_ACTION_DESC"
+              value="1"
+              />
+
+    </fieldset>
+  </fields>
+
+  <fields name="request">
+    <fieldset name="request">
+      <field  name="periodStart"
+              type="calendar"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_START_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_START_DESC"
+              />
+      <field  name="periodLength"
+              type="integer"
+              default="6"
+              first="1"
+              last="24"
+              step="1"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_DESC"
+              />
+    </fieldset>
+  </fields>
+
+</metadata>
