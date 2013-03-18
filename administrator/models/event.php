@@ -106,17 +106,17 @@ class EventsModelevent extends JModelAdmin
 	{
 		jimport('joomla.filter.output');
 
-		if (empty($table->id)) {
-
+		if (empty($table->id))
+    {
 			// Set ordering to the last item if not set
-			if (@$table->ordering === '') {
+			if (@$table->ordering === '')
+      {
 				$db = JFactory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__events_event');
 				$max = $db->loadResult();
 				$table->ordering = $max+1;
 			}
-
-		}
+		}    
 	}
 
 }

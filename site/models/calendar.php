@@ -19,6 +19,11 @@ class EventsModelCalendar extends EventsModelEvents
 
   public function getLinkEvents()
   {
+    // From "http://docs.joomla.org/Supporting_SEF_URLs_in_your_component":
+    // "Notice that it is possible to leave out the parameters option and
+    // Itemid.
+    // option defaults to the name of the component currently being executed,
+    // and Itemid defaults to the current menu item's ID."
     return JRoute::_( "index.php?view=events&format=json" );
   }
 

@@ -18,7 +18,7 @@ $calendarModel = $this->calendarModel;
 
 JHtml::_( 'stylesheet', 'com_events/fullCalendar/fullcalendar.css', array(), true );
 // TODO
-JHtml::_( 'stylesheet', 'com_events/fullCalendar/fullcalendar.pront.css', array(), true );
+JHtml::_( 'stylesheet', 'com_events/fullCalendar/fullcalendar.print.css', array(), true );
 
 JHtml::_( 'script', 'com_events/qTip/jquery.qtip-1.0.0-rc3.min.js', false, true );
 JHtml::_( 'script', 'com_events/fullCalendar/fullcalendar.min.js', false, true );

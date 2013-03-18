@@ -27,7 +27,8 @@ JHtml::_('behavior.keepalive');
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_events&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="event-form" class="form-validate">
-	<div class="width-60 fltlft">
+	
+  <div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT'); ?></legend>
 			<ul class="adminformlist">
@@ -102,6 +103,26 @@ JHtml::_('behavior.keepalive');
 
 	</div>
 
+  
+  
+	<div class="width-40 fltrt">
+
+		<?php echo JHtml::_('sliders.start', 'event-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+		
+    <?php echo JHtml::_('sliders.panel', JText::_('COM_EVENTS_PANEL_STATUS'), 'actions'); ?>
+    <fieldset class="panelform">
+      <ul class="adminformlist">
+        <li>
+          <?php echo $this->form->getLabel('cancelled'); ?>
+          <?php echo $this->form->getInput('cancelled'); ?>
+        </li>
+      </ul>
+    </fieldset>
+
+		<?php echo JHtml::_('sliders.end'); ?>
+	</div>
+  
+  
 
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>

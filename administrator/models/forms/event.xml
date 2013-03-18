@@ -27,15 +27,15 @@
       label="COM_EVENTS_FORM_LBL_EVENT_CATID"
       description="COM_EVENTS_FORM_DESC_EVENT_CATID" 
       required="true" 
+      show_root="true"
       extension="com_events.catid"
       filter="raw" /> 
  
-    <!-- TODO: how to rename root categorie? Shouldn't be "Root" but something like "- All categories -" -->
 		<field
       name="filter_catid"
       type="category"
-      label="COM_EVENTS_FORM_LBL_EVENT_CATID"
-      description="COM_EVENTS_FORM_DESC_EVENT_CATID"
+      label="COM_EVENTS_FORM_LBL_EVENT_FILTER_CATID"
+      description="COM_EVENTS_FORM_DESC_EVENT_FILTER_CATID"
       extension="com_events.catid"
       show_root="true"
       onchange="this.form.submit();" /> 
@@ -94,6 +94,19 @@
       description="COM_EVENTS_FORM_DESC_EVENT_MEETING_TIME"
       filter="safehtml"
       format="%Y-%m-%d %H:%i" />
+
+    <field
+      name="cancelled"
+      type="toggle"
+      label="COM_EVENTS_FORM_LBL_EVENT_CANCELLED"
+      description="COM_EVENTS_FORM_DESC_EVENT_CANCELLED"
+      required="true"
+      default="0"
+      theme="candy-blue"
+      >
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
 
     <field
       name="state"

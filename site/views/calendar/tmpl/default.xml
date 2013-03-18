@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  
+  <layout title="COM_EVENTS_CALENDAR_VIEW_DEFAULT_TITLE">
+    <message><![CDATA[COM_EVENTS_CALENDAR_VIEW_DEFAULT_DESC]]></message>
+  </layout>
+
+  <fields name="params">
+
+    <!-- results in COM_MENUS_OPTIONS_FIELDSET_LABEL -->
+    <fieldset name="OPTIONS">
+      
+      <field  name="catid"
+              type="category"
+              label="COM_EVENTS_CALENDAR_FIELD_CATID_LABEL"
+              description="COM_EVENTS_CALENDAR_FIELD_CATID_DESC" 
+              required="false"
+              show_root="true"
+              extension="com_events.catid"
+              filter="raw"
+              />      
+
+    </fieldset>
+
+  </fields>
+
+</metadata>

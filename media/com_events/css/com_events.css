@@ -1,0 +1,12 @@
+@media only screen {
+  
+  .adminformlist .switch
+  {
+    float: left;
+  }
+  
+  .switch label
+  {
+    clear: none;
+  }
+}

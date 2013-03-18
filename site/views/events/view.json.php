@@ -27,15 +27,11 @@ class EventsViewEvents extends JView
 
   /**
    * @todo only return published events (depending on user rights?)
+   * @todo allow to select category by request?
    * @param type $tpl
    */
 	function display($tpl = null)
 	{
-    // Set the MIME type for JSON output.
-    JFactory::getDocument()->setMimeEncoding("application/json");
-    // Change the suggested filename.
-    JResponse::setHeader( 'Content-Disposition', 'attachment; filename="'.$this->getName().'.json"' );
-
     $timestampFrom  = JRequest::getInt('start');
     $timestampTo    = JRequest::getInt('end');
 
@@ -44,7 +40,7 @@ class EventsViewEvents extends JView
 
     /* @var $eventsModel EventsModelEvents */
     $eventsModel = $this->getModel( 'events' );
-    $events = $eventsModel->getEvents( $from, $to );
+    $events = $eventsModel->getEvents( $from, $to, $eventsModel->getCatId() );
     $data = array();
 
     foreach ($events as $event)

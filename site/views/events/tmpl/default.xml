@@ -2,8 +2,27 @@
 <metadata>
   
   <layout title="COM_EVENTS_EVENTS_VIEW_DEFAULT_TITLE">
-    <message>COM_EVENTS_EVENTS_VIEW_DEFAULT_DESC</message>
+    <message><![CDATA[COM_EVENTS_EVENTS_VIEW_DEFAULT_DESC]]></message>
   </layout>
+
+  <fields name="request">
+    <fieldset name="request">
+      <field  name="periodStart"
+              type="calendar"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_START_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_START_DESC"
+              />
+      <field  name="periodLength"
+              type="integer"
+              default="6"
+              first="1"
+              last="24"
+              step="1"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_DESC"
+              />
+    </fieldset>
+  </fields>
 
   <!--
   Might be related to database fields. At least all the things defined here
@@ -15,9 +34,31 @@
   -->
   <fields name="params">
 
+    <!-- results in COM_MENUS_OPTIONS_FIELDSET_LABEL -->
+    <fieldset name="OPTIONS">
+      
+      <field  name="catid"
+              type="category"
+              label="COM_EVENTS_EVENTS_FIELD_CATID_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_CATID_DESC" 
+              required="false"
+              show_root="true"
+              extension="com_events.catid"
+              filter="raw"
+              />      
+
+      <field  name="showPrintAction"
+              type="checkbox"
+              label="COM_EVENTS_EVENTS_FIELD_SHOW_PRINT_ACTION_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_SHOW_PRINT_ACTION_DESC"
+              value="1"
+              />
+
+    </fieldset>
+    
     <!-- results in COM_MENUS_DECORATION_FIELDSET_LABEL -->
     <fieldset name="DECORATION">
-
+      
       <field  name="header"
               type="editor"
               label="COM_EVENTS_EVENTS_FIELD_HEADER_LABEL"
@@ -40,36 +81,6 @@
 
     </fieldset>
 
-    <!-- results in COM_MENUS_OPTIONS_FIELDSET_LABEL -->
-    <fieldset name="OPTIONS">
-
-      <field  name="showPrintAction"
-              type="checkbox"
-              label="COM_EVENTS_EVENTS_FIELD_SHOW_PRINT_ACTION_LABEL"
-              description="COM_EVENTS_EVENTS_FIELD_SHOW_PRINT_ACTION_DESC"
-              value="1"
-              />
-
-    </fieldset>
-  </fields>
-
-  <fields name="request">
-    <fieldset name="request">
-      <field  name="periodStart"
-              type="calendar"
-              label="COM_EVENTS_EVENTS_FIELD_PERIOD_START_LABEL"
-              description="COM_EVENTS_EVENTS_FIELD_PERIOD_START_DESC"
-              />
-      <field  name="periodLength"
-              type="integer"
-              default="6"
-              first="1"
-              last="24"
-              step="1"
-              label="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_LABEL"
-              description="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_DESC"
-              />
-    </fieldset>
   </fields>
 
 </metadata>

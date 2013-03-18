@@ -108,6 +108,13 @@ class EventsModelEvents extends JModel
     return JRoute::_( "index.php?view=calendar" );
   }
 
+  public function getCatId()
+  {
+    /* @var $state JRegistry */
+    $state = $this->getState('parameters.menu');
+    return (int)$state->get('catid');
+  }
+  
   public function getHeader()
   {
     /* @var $state JRegistry */
@@ -140,23 +147,26 @@ class EventsModelEvents extends JModel
 
   public function getEventsForCurrentDay()
   {
-    $from = DateTimeHelper::today();
-    $to   = DateTimeHelper::tomorrow();
+    $from   = DateTimeHelper::today();
+    $to     = DateTimeHelper::tomorrow();
+    $catid  = $this->getCatId();
     return $this->getEvents( $from, $to );
   }
 
   public function getEventsForCurrentWeek()
   {
-    $from = DateTimeHelper::thisWeek();
-    $to   = DateTimeHelper::nextWeek();
-    return $this->getEvents( $from, $to );
+    $from   = DateTimeHelper::thisWeek();
+    $to     = DateTimeHelper::nextWeek();
+    $catid  = $this->getCatId();
+    return $this->getEvents( $from, $to, $catid );
   }
 
   public function getEventsForCurrentMonth()
   {
-    $from = DateTimeHelper::thisMonth();
-    $to   = DateTimeHelper::nextMonth();
-    return $this->getEvents( $from, $to );
+    $from   = DateTimeHelper::thisMonth();
+    $to     = DateTimeHelper::nextMonth();
+    $catid  = $this->getCatId();
+    return $this->getEvents( $from, $to, $catid );
   }
 
   public function getEventsForCurrentQuarter()
@@ -181,7 +191,9 @@ class EventsModelEvents extends JModel
       $from = DateTimeHelper::addMonths( DateTimeHelper::thisYear(), 9 );
     }
 
-    return $this->getEvents( $from, DateTimeHelper::addMonths(clone $from,3) );
+    $catid  = $this->getCatId();
+    
+    return $this->getEvents( $from, DateTimeHelper::addMonths(clone $from,3), $catid );
   }
 
   public function getEventsForCurrentHalfYear()
@@ -199,30 +211,35 @@ class EventsModelEvents extends JModel
       $from = DateTimeHelper::addMonths( DateTimeHelper::thisYear(), 6 );
     }
 
-    return $this->getEvents( $from, DateTimeHelper::addMonths(clone $from,6) );
+    $catid  = $this->getCatId();
+    
+    return $this->getEvents( $from, DateTimeHelper::addMonths(clone $from,6), $catid );
   }
 
   public function getEventsForCurrentYear()
   {
-    $from = DateTimeHelper::thisYear();
-    $to   = DateTimeHelper::nextYear();
-    return $this->getEvents( $from, $to );
+    $from   = DateTimeHelper::thisYear();
+    $to     = DateTimeHelper::nextYear();
+    $catid  = $this->getCatId();
+    return $this->getEvents( $from, $to, $catid );
   }
 
   public function getEventsForCurrentPeriod()
   {
-    $from = $this->getPeriodStart();
-    $to   = $this->getPeriodEnd();
-    return $this->getEvents( $from, $to );
+    $from   = $this->getPeriodStart();
+    $to     = $this->getPeriodEnd();
+    $catid  = $this->getCatId();
+    return $this->getEvents( $from, $to, $catid );
   }
 
   /**
    * @todo allow to filter by category
    * @param DateTime $from
    * @param DateTime $to
+   * @param int $catid defaults to 0, meaning "all categories" or "don't restrict to category"
    * @return array
    */
-  public function getEvents( DateTime $from, DateTime $to )
+  public function getEvents( DateTime $from, DateTime $to, $catid=0 )
   {
     $strFrom  = $from->format( self::MYSQL_FORMAT );
     $strTo    = $to->format( self::MYSQL_FORMAT );
@@ -233,8 +250,13 @@ class EventsModelEvents extends JModel
     $query  = $db->getQuery(true);
     $query->select( 'e.*' );
     $query->from('#__events_event as e');
-    $query->where("time_start >= '{$strFrom}' AND time_start < '{$strTo}'");
+    $query->where("time_start >= '{$strFrom}'");
+    $query->where("time_start < '{$strTo}'");
     $query->order('time_start');
+    
+    if (is_int($catid) && $catid > 0) {
+      $query->where("catid = $catid");
+    }
 
     $db->setQuery((string)$query);
     if (!$db->query())

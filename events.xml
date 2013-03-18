@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.6.0" method="upgrade">
+<extension type="component" version="2.5.0" method="upgrade">
 
   <!--
   Tutorial about component development:
   "http://docs.joomla.org/Developing_a_Model-View-Controller_(MVC)_Component_for_Joomla!1.6_-_Part_01"
+  "http://docs.joomla.org/Developing_a_Model-View-Controller_Component/2.5/Introduction"
   -->
 
-	<name>events</name>
+	<name>COM_EVENTS</name>
 	<creationDate>2011-09-25</creationDate>
 	<copyright>Copyright (C) 2011. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
   <author>Benjamin Wöster</author>
 	<authorEmail>benjamin.woester@gmail.com</authorEmail>
 	<authorUrl></authorUrl>
-	<version>1.1.2</version>
-	<description>Create and show upcomming events.</description>
+	<version>1.2.0</version>
+	<description>COM_EVENTS_XML_DESCRIPTION</description>
 
   <!-- Runs on install -->
 	<install>
@@ -30,9 +31,17 @@
     </sql>
   </uninstall>
 
+  <!-- Runs on update; New in 2.5 -->
+  <update>
+    <schemas>
+      <schemapath type="mysql">sql/updates/mysql</schemapath>
+    </schemas>
+  </update>
+
 	<files folder="site">
 		<folder>controllers</folder>
 		<folder>helpers</folder>
+    <folder>language</folder>
 		<folder>models</folder>
 		<folder>views</folder>
 		<filename>controller.php</filename>
@@ -42,12 +51,14 @@
 	</files>
 
 	<languages folder="site">
-		<language tag="en-GB">language/en-GB.com_events.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.com_events.ini</language>
 	</languages>
 
   <!-- Site Main Media File Copy Section -->
 	<media folder="media" destination="com_events">
     <folder>anytime</folder>
+    <folder>css-toggle-switch</folder>
+    <folder>com_events</folder>
     <folder>fullCalendar</folder>
     <folder>qTip</folder>
 	</media>
@@ -63,6 +74,7 @@
     <files folder="administrator">
 			<folder>controllers</folder>
 			<folder>helpers</folder>
+      <folder>language</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>
@@ -75,8 +87,8 @@
 		</files>
 
 		<languages folder="administrator">
-			<language tag="en-GB">language/en-GB.com_events.ini</language>
-			<language tag="en-GB">language/en-GB.com_events.sys.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_events.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_events.sys.ini</language>
 		</languages>
 	</administration>
 
