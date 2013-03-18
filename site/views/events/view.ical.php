@@ -27,6 +27,10 @@ JLoader::import( 'components.com_events.helpers.dateTimeHelper', JPATH_BASE );
  */
 class VEvent
 {
+  const STATUS_TENTATIVE = 'TENTATIVE'; // Indicates event is tentative.
+  const STATUS_CONFIRMED = 'CONFIRMED'; // Indicates event is definite.
+  const STATUS_CANCELLED = 'CANCELLED'; // Indicates event was cancelled.
+  
   const CLASS_PUBLIC        = 'PUBLIC';
   const CLASS_PRIVATE       = 'PRIVATE';
   const CLASS_CONFIDENTIAL  = 'CONFIDENTIAL';
@@ -42,6 +46,7 @@ class VEvent
   public $dtLastModified = null;          // LAST-MODIFIED:20120317T221014Z
   public $location = '';                  // LOCATION:location
   public $summary = '';                   // SUMMARY:Termin Subject
+  public $status = '';                    // STATUS:CONFIRMED
 
   public function __construct( $uid, DateTime $stamp, DateTime $start )
   {
@@ -102,6 +107,10 @@ class VEvent
       $aLines[] = 'CLASS:' . $this->class;
     }
 
+    if ($this->status === self::STATUS_CANCELLED || $this->status === self::STATUS_CONFIRMED || $this->status === self::STATUS_TENTATIVE) {
+      $aLines[] = 'STATUS:' . $this->status;
+    }
+    
     if (is_string($this->summary) && $this->summary !== '') {
       $aLines[] = 'SUMMARY:' . $this->summary;
     }
@@ -242,6 +251,7 @@ class EventsViewEvents extends JView
 	function display($tpl = null)
 	{
     $doc = JFactory::getDocument();
+
     /* @var $eventsModel EventsModelEvents */
     $eventsModel = $this->eventsModel = $this->getModel( 'events' );
 
@@ -254,19 +264,18 @@ class EventsViewEvents extends JView
     // JResponse::setHeader( 'Content-Disposition', 'attachment; filename="'.$this->getName().'.ics"' );
 
     // begin of current half year
-    $from = $eventsModel->getPeriodStart();
+    $periodStart = $eventsModel->getPeriodStart();
     // end of current half year
-    $to   = $eventsModel->getPeriodEnd();
+    $periodEnd = $eventsModel->getPeriodEnd();
 
     // extend the range one year into the past and one year into the future
-    $from = DateTimeHelper::substractYears( $from );
-    $to = DateTimeHelper::addYears( $to );
+    $from = DateTimeHelper::substractYears( $periodStart );
+    $to = DateTimeHelper::addYears( $periodEnd );
 
-    $events = $eventsModel->getEvents( $from, $to );
-
-    // var_dump($events);
+    $events = $eventsModel->getEvents( $from, $to, $eventsModel->getCatId() );
 
     $iCal = new VCalendar();
+    
     foreach ($events as $event)
     {
       $iEvent = new VEvent(
@@ -281,7 +290,10 @@ class EventsViewEvents extends JView
       $iEvent->dtEnd        = $event->time_end === '0000-00-00 00:00:00'
         ? DateTimeHelper::addHours( new DateTime($event->time_start), 2 )
         : new DateTime( $event->time_end );
-
+      $iEvent->status       = ((bool)$event->cancelled)
+        ? VEvent::STATUS_CANCELLED
+        : '';
+      
       // currently not supported by com_events
       // $iEvent->dtCreated = ???
       // $iEvent->dtLastModified = ???

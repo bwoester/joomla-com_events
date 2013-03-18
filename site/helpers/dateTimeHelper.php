@@ -4,6 +4,7 @@
 
 class DateTimeHelper
 {
+  const ICAL_DATE_TIME_FORMAT = 'Ymd\THis\Z';
   const ISO_FORMAT = 'Y-m-d H:i:s';
   const ISO_DATE_FORMAT = 'Y-m-d';
   const GERMAN_FORMAT = 'd.m.Y, H:i';
@@ -165,51 +166,87 @@ class DateTimeHelper
     return new DateTime( $iso );
   }
 
+  static public function addSeconds( DateTime $dateTime, $numberOfSeconds=1 )
+  {
+    $dateTime->modify("+{$numberOfSeconds} seconds");
+    return $dateTime;
+  }
+
+  static public function addMinutes( DateTime $dateTime, $numberOfMinutes=1 )
+  {
+    $dateTime->modify("+{$numberOfMinutes} minutes");
+    return $dateTime;
+  }
+
+  static public function addHours( DateTime $dateTime, $numberOfHours=1 )
+  {
+    $dateTime->modify("+{$numberOfHours} hours");
+    return $dateTime;
+  }
+
   static public function addDays( DateTime $dateTime, $numberOfDays=1 )
   {
-    $dateTime->modify("+{$numberOfDays} day");
+    $dateTime->modify("+{$numberOfDays} days");
     return $dateTime;
   }
 
   static public function addWeeks( DateTime $dateTime, $numberOfWeeks=1 )
   {
-    $dateTime->modify("+{$numberOfWeeks} week");
+    $dateTime->modify("+{$numberOfWeeks} weeks");
     return $dateTime;
   }
 
   static public function addMonths( DateTime $dateTime, $numberOfMonths=1 )
   {
-    $dateTime->modify("+{$numberOfMonths} month");
+    $dateTime->modify("+{$numberOfMonths} months");
     return $dateTime;
   }
 
   static public function addYears( DateTime $dateTime, $numberOfYears=1 )
   {
-    $dateTime->modify("+{$numberOfYears} year");
+    $dateTime->modify("+{$numberOfYears} years");
+    return $dateTime;
+  }
+
+  static public function substractSeconds( DateTime $dateTime, $numberOfSeconds=1 )
+  {
+    $dateTime->modify("-{$numberOfSeconds} seconds");
+    return $dateTime;
+  }
+
+  static public function substractMinutes( DateTime $dateTime, $numberOfMinutes=1 )
+  {
+    $dateTime->modify("-{$numberOfMinutes} minutes");
+    return $dateTime;
+  }
+
+  static public function substractHours( DateTime $dateTime, $numberOfHours=1 )
+  {
+    $dateTime->modify("-{$numberOfHours} hours");
     return $dateTime;
   }
 
   static public function substractDays( DateTime $dateTime, $numberOfDays=1 )
   {
-    $dateTime->modify("-{$numberOfDays} day");
+    $dateTime->modify("-{$numberOfDays} days");
     return $dateTime;
   }
 
   static public function substractWeeks( DateTime $dateTime, $numberOfWeeks=1 )
   {
-    $dateTime->modify("-{$numberOfWeeks} week");
+    $dateTime->modify("-{$numberOfWeeks} weeks");
     return $dateTime;
   }
 
   static public function substractMonths( DateTime $dateTime, $numberOfMonths=1 )
   {
-    $dateTime->modify("-{$numberOfMonths} month");
+    $dateTime->modify("-{$numberOfMonths} months");
     return $dateTime;
   }
 
   static public function substractYears( DateTime $dateTime, $numberOfYears=1 )
   {
-    $dateTime->modify("-{$numberOfYears} year");
+    $dateTime->modify("-{$numberOfYears} years");
     return $dateTime;
   }
 
