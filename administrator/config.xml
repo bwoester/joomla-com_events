@@ -14,7 +14,22 @@
                  <option value="1">JSHOW</option>
          </field>
 
+    <!--
+    TODO: this could be a special field that allows to select an article
+    @see "http://www.spiralscripts.co.uk/Joomla-Tips/creating-custom-parameters-in-joomla-16.html"
+    -->
+    <field
+      name="iCalHelpArticle"
+      type="text"
+      default="/hilfe/iCalendar"
+      label="COM_EVENTS_ICALHELP_LABEL"
+      description="COM_EVENTS_ICALHELP_DESC"
+      >
+    </field>
+
+
   </fieldset>
+
 
   <fieldset name="permissions"
     description="JCONFIG_PERMISSIONS_DESC"

@@ -44,6 +44,20 @@ $eventsModel = $this->eventsModel;
 <?php endif; ?>
 </ul>
 
+
+<dl class="article-info">
+  <dt class="article-info-term">Integration</dt>
+  <?php if ($eventsModel->showLinkICalendarHelp()): ?>
+  <dd class="icalendar-help">
+    Was ist iCalendar? <a href="<?php echo $eventsModel->getLinkICalendarHelp(); ?>">iCalendar Hilfe</a>
+  </dd>
+  <?php endif; ?>
+  <dd class="icalendar-link">
+    iCalendar Link: <a href="<?php echo $eventsModel->getLinkICalendar(); ?>">iCalendar</a>
+  </dd>
+ </dl>
+
+  
 <p>
 <?php echo $eventsModel->getHeader(); ?>
 </p>

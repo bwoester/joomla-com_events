@@ -63,7 +63,15 @@ class EventsModelEvents extends JModel
   {
     return DateTimeHelper::addMonths( $this->getPeriodStart(), $this->getPeriodLength() );
   }
-
+ 
+  /**
+   * @return bool
+   */
+  public function showLinkICalendarHelp()
+  {
+    return $this->getLinkICalendarHelp() !== '';
+  }
+  
   public function showLinkEarlier()
   {
     // we only show links 5 years into the past
@@ -107,6 +115,26 @@ class EventsModelEvents extends JModel
   {
     return JRoute::_( "index.php?view=calendar" );
   }
+  
+  /**
+   * @return string
+   */
+  public function getLinkICalendarHelp()
+  {
+    // Get the parameters
+    $params = JComponentHelper::getParams('com_events');
+    $url = $params->get( 'iCalHelpArticle', '' );
+    return $url;
+  }
+
+  /**
+   * @return string
+   */
+  public function getLinkICalendar()
+  {
+    return JRoute::_( "index.php?view=events&format=ical" );
+  }
+  
 
   public function getCatId()
   {
