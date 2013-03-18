@@ -17,6 +17,7 @@ jimport('joomla.application.component.view');
  */
 class EventsViewEvents extends JView {
 
+	protected $categories;
   protected $items;
   protected $pagination;
   protected $state;
@@ -24,10 +25,12 @@ class EventsViewEvents extends JView {
   /**
    * Display the view
    */
-  public function display($tpl = null) {
-    $this->state = $this->get('State');
-    $this->items = $this->get('Items');
+  public function display($tpl = null)
+  {
+		$this->categories	= $this->get('CategoryOrders');
+    $this->items      = $this->get('Items');
     $this->pagination = $this->get('Pagination');
+    $this->state      = $this->get('State');
 
     // Check for errors.
     if (count($errors = $this->get('Errors'))) {
@@ -36,10 +39,6 @@ class EventsViewEvents extends JView {
     }
 
     $this->addToolbar();
-
-    $input = JFactory::getApplication()->input;
-    $view = $input->getCmd('view', '');
-    EventsHelper::addSubmenu($view);
 
     parent::display($tpl);
   }

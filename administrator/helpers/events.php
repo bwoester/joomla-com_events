@@ -41,27 +41,37 @@ class EventsHelper {
     }
   }
 
-  /**
-   * Gets a list of the actions that can be performed.
-   *
-   * @return  JObject
-   * @since  1.6
-   */
-  public static function getActions() {
-    $user = JFactory::getUser();
-    $result = new JObject;
+	/**
+	 * Gets a list of the actions that can be performed.
+	 *
+	 * @param	int		The category ID.
+	 *
+	 * @return	JObject
+	 * @since	1.6
+	 */
+	public static function getActions($categoryId = 0)
+	{
+		$user   = JFactory::getUser();
+		$result	= new JObject;
 
-    $assetName = 'com_events';
+		if (empty($categoryId))
+    {
+			$assetName  = 'com_events';
+			$level      = 'component';
+		}
+    else
+    {
+			$assetName  = 'com_events.category.' . (int)$categoryId;
+			$level      = 'category';
+		}
 
-    $actions = array(
-        'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
-    );
+		$actions = JAccess::getActions( 'com_events', $level );
 
-    foreach ($actions as $action) {
-      $result->set($action, $user->authorise($action, $assetName));
-    }
+		foreach ($actions as $action) {
+			$result->set( $action->name, $user->authorise($action->name,$assetName) );
+		}
 
-    return $result;
-  }
+		return $result;
+	}
 
 }

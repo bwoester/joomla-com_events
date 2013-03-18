@@ -6,17 +6,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Created by com_combuilder - http://www.notwebdesign.com
  */
+
 // no direct access
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
-JHTML::_('script', 'system/multiselect.js', false, true);
-$user = JFactory::getUser();
-$userId = $user->get('id');
-$listOrder = $this->state->get('list.ordering');
-$listDirn = $this->state->get('list.direction');
-$canOrder = $user->authorise('core.edit.state', 'com_events');
-$saveOrder = $listOrder == 'a.ordering';
+JHtml::_('behavior.multiselect');
+
+$user       = JFactory::getUser();
+$userId     = $user->get('id');
+$listOrder  = $this->escape($this->state->get('list.ordering'));
+$listDirn   = $this->escape($this->state->get('list.direction'));
+$canOrder   = $user->authorise('core.edit.state', 'com_events.category');
+$saveOrder	= $listOrder=='ordering';
+$params     = (isset($this->state->params)) ? $this->state->params : new JObject();
+
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_events&view=events'); ?>" method="post" name="adminForm" id="adminForm">
@@ -31,25 +35,17 @@ $saveOrder = $listOrder == 'a.ordering';
           this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
     </div>
 
-    <div class="filter-select fltrt">
-      <select name="filter_published" class="inputbox" onchange="this.form.submit()">
-        <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true); ?>
-      </select>
-    </div>
+		<div class="filter-select fltrt">
+			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+			</select>
 
-    <div class='filter-select fltrt'>
-<?php
-//Filter for the field catid
-$selected_catid = JRequest::getVar('filter_catid');
-jimport('joomla.form.form');
-JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-$form = JForm::getInstance('com_events.event', 'event');
-echo $form->getLabel('filter_catid');
-echo $form->getInput('filter_catid', null, $selected_catid);
-?>
+			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_events'), 'value', 'text', $this->state->get('filter.category_id'));?>
+			</select>
     </div>
-
 
   </fieldset>
 

@@ -26,8 +26,23 @@ class EventsController extends JController
   {
     require_once JPATH_COMPONENT.'/helpers/events.php';
 
-    $view    = JFactory::getApplication()->input->getCmd('view', 'events');
-        JFactory::getApplication()->input->set('view', $view);
+		// Load the submenu.
+		EventsHelper::addSubmenu( JFactory::getApplication()->input->getCmd('view','events') );
+    
+    $view   = JFactory::getApplication()->input->getCmd('view', 'events');
+    $layout = JFactory::getApplication()->input->getCmd('layout', 'default');
+    $id     = JFactory::getApplication()->input->getInt('id');
+
+		// Check for edit form.
+		if ($view == 'event' && $layout == 'edit' && !$this->checkEditId('com_events.edit.event', $id))
+    {
+      // Somehow the person just went to the form - we don't allow that.
+      $this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+      $this->setMessage($this->getError(), 'error');
+      $this->setRedirect(JRoute::_('index.php?option=com_events&view=events', false));
+
+      return false;
+		}
 
     parent::display($cachable, $urlparams);
 
