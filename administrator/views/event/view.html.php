@@ -56,7 +56,7 @@ class EventsViewEvent extends JView
     }
     $canDo    = EventsHelper::getActions();
 
-    JToolBarHelper::title(JText::_('COM_EVENTS_TITLE_EVENT'), 'event.png');
+    JToolBarHelper::title(JText::_('COM_EVENT_MANAGER_EVENT'), 'event.png');
 
     // If not checked out, can save the item.
     if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))

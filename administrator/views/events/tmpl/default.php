@@ -62,7 +62,7 @@ echo $form->getInput('filter_catid', null, $selected_catid);
           <input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
         </th>
         <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_CATEGORIES', 'a.catid', $listDirn, $listOrder); ?>
+          <?php echo JHtml::_('grid.sort', 'JCATEGORY', 'a.catid', $listDirn, $listOrder); ?>
         </th>
         <th class='left'>
           <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_TITLE', 'a.title', $listDirn, $listOrder); ?>

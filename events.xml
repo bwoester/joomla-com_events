@@ -67,8 +67,8 @@
     <menu>COM_EVENTS</menu>
 
     <submenu>
-      <menu link="option=com_events&amp;view=events" view="events" img="class:events" alt="Events/Events">COM_EVENTS_EVENTS</menu>
-      <menu link="option=com_categories&amp;extension=com_events.catid" view="categories" alt="Events/Categories">COM_EVENTS_CATEGORIES</menu>
+      <menu link="option=com_events&amp;view=events" view="events" img="class:events" alt="Events/Events">COM_EVENTS_SUBMENU_EVENTS</menu>
+      <menu link="option=com_categories&amp;extension=com_events" view="categories" img="class:events-cat" alt="Events/Categories">COM_EVENTS_SUBMENU_CATEGORIES</menu>
     </submenu>
 
     <files folder="administrator">

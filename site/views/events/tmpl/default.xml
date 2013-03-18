@@ -43,8 +43,7 @@
               description="COM_EVENTS_EVENTS_FIELD_CATID_DESC" 
               required="false"
               show_root="true"
-              extension="com_events.catid"
-              filter="raw"
+              extension="com_events"
               />      
 
       <field  name="showPrintAction"

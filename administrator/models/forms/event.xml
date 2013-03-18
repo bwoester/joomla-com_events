@@ -28,7 +28,7 @@
       description="COM_EVENTS_FORM_DESC_EVENT_CATID" 
       required="true" 
       show_root="true"
-      extension="com_events.catid"
+      extension="com_events"
       filter="raw" /> 
  
     <field
@@ -36,7 +36,7 @@
       type="category"
       label="COM_EVENTS_FORM_LBL_EVENT_FILTER_CATID"
       description="COM_EVENTS_FORM_DESC_EVENT_FILTER_CATID"
-      extension="com_events.catid"
+      extension="com_events"
       show_root="true"
       onchange="this.form.submit();" /> 
     

@@ -18,16 +18,26 @@ class EventsHelper {
   /**
    * Configure the Linkbar.
    */
-  public static function addSubmenu($vName = '') {
+  public static function addSubmenu( $vName = '' )
+  {
     JSubMenuHelper::addEntry(
-            JText::_('COM_EVENTS_TITLE_EVENTS'), 'index.php?option=com_events&view=events', $vName == 'events'
+      JText::_('COM_EVENTS_SUBMENU_EVENTS'),
+      'index.php?option=com_events&view=events',
+      $vName == 'events'
     );
-    JSubMenuHelper::addEntry(
-            'Categories (Category)', "index.php?option=com_categories&extension=com_events.catid", $vName == 'categories'
+    
+		JSubMenuHelper::addEntry(
+			JText::_('COM_EVENTS_SUBMENU_CATEGORIES'),
+			'index.php?option=com_categories&extension=com_events',
+			$vName == 'categories'
     );
-
-    if ($vName == 'categories.catid') {
-      JToolBarHelper::title('Events: Categories (Category)');
+    
+    if ($vName=='categories')
+    {
+      JToolBarHelper::title(
+        JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', JText::_('COM_EVENTS')),
+        'events-categories'
+      );
     }
   }
 

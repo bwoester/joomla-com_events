@@ -55,7 +55,7 @@ class EventsViewEvents extends JView {
     $state = $this->get('State');
     $canDo = EventsHelper::getActions($state->get('filter.category_id'));
 
-    JToolBarHelper::title(JText::_('COM_EVENTS_TITLE_EVENTS'), 'events.png');
+    JToolBarHelper::title(JText::_('COM_EVENT_MANAGER_EVENTS'), 'events.png');
 
     //Check if the form exists before showing the add/edit buttons
     $formPath = JPATH_COMPONENT_ADMINISTRATOR . '/views/event';
