@@ -151,6 +151,9 @@ $params     = (isset($this->state->params)) ? $this->state->params : new JObject
     </tbody>
   </table>
 
+	<?php //Load the batch processing form. ?>
+	<?php echo $this->loadTemplate('batch'); ?>
+
   <div>
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
