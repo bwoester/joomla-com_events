@@ -15,23 +15,23 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 ?>
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'event.cancel' || document.formvalidator.isValid(document.id('event-form'))) {
-			Joomla.submitform(task, document.getElementById('event-form'));
-		}
-		else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
-		}
-	}
+  Joomla.submitbutton = function(task)
+  {
+    if (task == 'event.cancel' || document.formvalidator.isValid(document.id('event-form'))) {
+      Joomla.submitform(task, document.getElementById('event-form'));
+    }
+    else {
+      alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+    }
+  }
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_events&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="event-form" class="form-validate">
-	
+  
   <div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT'); ?></legend>
-			<ul class="adminformlist">
+    <fieldset class="adminform">
+      <legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT'); ?></legend>
+      <ul class="adminformlist">
             
         <li>
           <?php echo $this->form->getLabel('catid'); ?>
@@ -73,9 +73,9 @@ JHtml::_('behavior.keepalive');
     
     
     
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT_DETAILS'); ?></legend>
-			<ul class="adminformlist">
+    <fieldset class="adminform">
+      <legend><?php echo JText::_('COM_EVENTS_LEGEND_EVENT_DETAILS'); ?></legend>
+      <ul class="adminformlist">
 
         <li>
           <?php echo $this->form->getLabel('meeting_place'); ?>
@@ -101,14 +101,14 @@ JHtml::_('behavior.keepalive');
     <?php echo $this->form->getLabel('checked_out_time'); ?>
     <?php echo $this->form->getInput('checked_out_time'); ?>
 
-	</div>
+  </div>
 
   
   
-	<div class="width-40 fltrt">
+  <div class="width-40 fltrt">
 
-		<?php echo JHtml::_('sliders.start', 'event-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-		
+    <?php echo JHtml::_('sliders.start', 'event-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+    
     <?php echo JHtml::_('sliders.panel', JText::_('COM_EVENTS_PANEL_STATUS'), 'actions'); ?>
     <fieldset class="panelform">
       <ul class="adminformlist">
@@ -119,12 +119,12 @@ JHtml::_('behavior.keepalive');
       </ul>
     </fieldset>
 
-		<?php echo JHtml::_('sliders.end'); ?>
-	</div>
+    <?php echo JHtml::_('sliders.end'); ?>
+  </div>
   
   
 
-	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
-	<div class="clr"></div>
+  <input type="hidden" name="task" value="" />
+  <?php echo JHtml::_('form.token'); ?>
+  <div class="clr"></div>
 </form>

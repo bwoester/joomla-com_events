@@ -16,13 +16,13 @@ defined('_JEXEC') or die;
 class ComEventsBehavior
 {
 
-	/**
-	 * Add unobtrusive javascript support for a detetime control.
-	 *
-	 * @return  void
-	 */
+  /**
+   * Add unobtrusive javascript support for a detetime control.
+   *
+   * @return  void
+   */
   public static function datetime()
-	{
+  {
     static $loaded = false;
 
     // Only load once
@@ -34,7 +34,7 @@ class ComEventsBehavior
     $tag      = JFactory::getLanguage()->getTag();
 
     //Add uncompressed versions when debug is enabled
-//    $uncompressed	= JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
+//    $uncompressed  = JFactory::getConfig()->get('debug') ? '-uncompressed' : '';
     JHtml::_( 'stylesheet', 'com_events/anytime/anytime.css', array(), true );
     JHtml::_( 'script', 'com_events/anytime/anytime.js', false, true );
 
@@ -44,7 +44,7 @@ class ComEventsBehavior
 //    }
     
     $loaded = true;
-	}
+  }
 
   /**
    * TODO: copied from joomla as an example. Not yet modified to translate the

@@ -31,7 +31,7 @@
       extension="com_events.catid"
       filter="raw" /> 
  
-		<field
+    <field
       name="filter_catid"
       type="category"
       label="COM_EVENTS_FORM_LBL_EVENT_FILTER_CATID"

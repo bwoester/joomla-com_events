@@ -19,7 +19,7 @@ class EventsControllerEvents extends JControllerAdmin {
 
   /**
    * Proxy for getModel.
-   * @since	1.6
+   * @since  1.6
    */
   public function getModel($name = 'event', $prefix = 'EventsModel') {
     $model = parent::getModel($name, $prefix, array('ignore_request' => true));

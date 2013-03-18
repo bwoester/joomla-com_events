@@ -79,9 +79,9 @@ class EventsModelevents extends JModelList {
    * different modules that might need different sets of data or different
    * ordering requirements.
    *
-   * @param	string		$id	A prefix for the store id.
-   * @return	string		A store id.
-   * @since	1.6
+   * @param  string    $id  A prefix for the store id.
+   * @return  string    A store id.
+   * @since  1.6
    */
   protected function getStoreId($id = '') {
     // Compile the store id.
@@ -94,8 +94,8 @@ class EventsModelevents extends JModelList {
   /**
    * Build an SQL query to load the list data.
    *
-   * @return	JDatabaseQuery
-   * @since	1.6
+   * @return  JDatabaseQuery
+   * @since  1.6
    */
   protected function getListQuery() {
     // Create a new query object.

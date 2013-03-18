@@ -23,22 +23,22 @@ class JFormFieldToggle extends JFormField
     'ios'         => 'ios'
   );
   
-	/**
-	 * The form field type.
-	 *
-	 * @var		string
-	 * @since	1.6
-	 */
-	protected $type = 'Toggle';
+  /**
+   * The form field type.
+   *
+   * @var    string
+   * @since  1.6
+   */
+  protected $type = 'Toggle';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return	string	The field input markup.
-	 * @since	1.6
-	 */
-	protected function getInput()
-	{
+  /**
+   * Method to get the field input markup.
+   *
+   * @return  string  The field input markup.
+   * @since  1.6
+   */
+  protected function getInput()
+  {
     // register necessary style sheets
     JHtml::_( 'stylesheet', 'com_events/css-toggle-switch/toggle-switch.css', array(), true );
     JHtml::_( 'stylesheet', 'com_events/com_events/com_events.css', array(), true );
@@ -51,7 +51,7 @@ class JFormFieldToggle extends JFormField
 TOGGLE_MARKUP;
     
     return $markup;
-	}
+  }
   
   /////////////////////////////////////////////////////////////////////////////
 
@@ -60,16 +60,16 @@ TOGGLE_MARKUP;
     $retVal = array();
     $options = $this->_getOptions();
     
-		// Build the radio field output.
-		foreach ($options as $i => $option)
-		{
-			// Initialize some option attributes.
-			$checked  = ((string) $option->value == (string) $this->value) ? 'checked="checked"' : '';
-			$class    = !empty($option->class) ? 'class="' . $option->class . '"' : '';
-			$disabled = !empty($option->disable) ? 'disabled="disabled"' : '';
+    // Build the radio field output.
+    foreach ($options as $i => $option)
+    {
+      // Initialize some option attributes.
+      $checked  = ((string) $option->value == (string) $this->value) ? 'checked="checked"' : '';
+      $class    = !empty($option->class) ? 'class="' . $option->class . '"' : '';
+      $disabled = !empty($option->disable) ? 'disabled="disabled"' : '';
 
-			// Initialize some JavaScript option attributes.
-			$onclick = !empty($option->onclick) ? 'onclick="' . $option->onclick . '"' : '';
+      // Initialize some JavaScript option attributes.
+      $onclick = !empty($option->onclick) ? 'onclick="' . $option->onclick . '"' : '';
 
       $id     = $this->id . $i;
       $value  = htmlspecialchars( $option->value, ENT_COMPAT, 'UTF-8' );
@@ -81,54 +81,54 @@ TOGGLE_MARKUP;
   <label onclick="" for="{$id}" {$class}>{$lblText}</label>
 TOGGLE_MARKUP;
       
-		}
+    }
     
     return implode( "\n", $retVal );
   }
   
   /////////////////////////////////////////////////////////////////////////////
   
-	/**
-	 * Method to get the field options for radio buttons.
-	 *
-	 * @return  array  The field option objects.
-	 *
-	 * @since   11.1
-	 */
-	private function _getOptions()
-	{
-		// Initialize variables.
-		$options = array();
+  /**
+   * Method to get the field options for radio buttons.
+   *
+   * @return  array  The field option objects.
+   *
+   * @since   11.1
+   */
+  private function _getOptions()
+  {
+    // Initialize variables.
+    $options = array();
 
-		foreach ($this->element->children() as $option)
-		{
+    foreach ($this->element->children() as $option)
+    {
 
-			// Only add <option /> elements.
-			if ($option->getName() != 'option')
-			{
-				continue;
-			}
+      // Only add <option /> elements.
+      if ($option->getName() != 'option')
+      {
+        continue;
+      }
 
-			// Create a new option object based on the <option /> element.
-			$tmp = JHtml::_(
-				'select.option', (string) $option['value'], trim((string) $option), 'value', 'text',
-				((string) $option['disabled'] == 'true')
-			);
+      // Create a new option object based on the <option /> element.
+      $tmp = JHtml::_(
+        'select.option', (string) $option['value'], trim((string) $option), 'value', 'text',
+        ((string) $option['disabled'] == 'true')
+      );
 
-			// Set some option attributes.
-			$tmp->class = (string) $option['class'];
+      // Set some option attributes.
+      $tmp->class = (string) $option['class'];
 
-			// Set some JavaScript option attributes.
-			$tmp->onclick = (string) $option['onclick'];
+      // Set some JavaScript option attributes.
+      $tmp->onclick = (string) $option['onclick'];
 
-			// Add the option object to the result set.
-			$options[] = $tmp;
-		}
+      // Add the option object to the result set.
+      $options[] = $tmp;
+    }
 
-		reset($options);
+    reset($options);
 
-		return $options;
-	}
+    return $options;
+  }
   
   /////////////////////////////////////////////////////////////////////////////
   
