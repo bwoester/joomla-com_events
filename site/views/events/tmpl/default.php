@@ -44,17 +44,9 @@ $eventsModel = $this->eventsModel;
 <?php endif; ?>
 </ul>
 
-
-
 <p>
 <?php echo $eventsModel->getHeader(); ?>
 </p>
-
-<?php
-//echo '<pre>';
-//print_r($this);
-//echo '</pre>';
-?>
 
 <table>
   <caption>

@@ -23,21 +23,25 @@ class EventsModelevents extends JModelList {
    * @see        JController
    * @since    1.6
    */
-  public function __construct($config = array()) {
+  public function __construct($config = array())
+  {
     if (empty($config['filter_fields'])) {
       $config['filter_fields'] = array(
-          'id', 'a.id',
-          'ordering', 'a.ordering',
-          'state', 'a.state',
-          'catid', 'a.catid',
-          'title', 'a.title',
-          'description', 'a.description',
-          'location', 'a.location',
-          'time_start', 'a.time_start',
-          'time_end', 'a.time_end',
-          'meeting_place', 'a.meeting_place',
-          'meeting_time', 'a.meeting_time',
-      );
+        'id', 'a.id',
+        'ordering', 'a.ordering',
+        'state', 'a.state',
+        'checked_out', 'a.checked_out',
+        'checked_out_time', 'a.checked_out_time',
+        'catid', 'a.catid', 'category_title',
+        'title', 'a.title',
+        'time_start', 'a.time_start',
+        'description', 'a.description',
+        'location', 'a.location',
+        'time_end', 'a.time_end',
+        'meeting_place', 'a.meeting_place',
+        'meeting_time', 'a.meeting_time',
+        'cancelled', 'a.cancelled',
+    );
     }
 
     parent::__construct($config);
@@ -48,7 +52,8 @@ class EventsModelevents extends JModelList {
    *
    * Note. Calling getState in this method will result in recursion.
    */
-  protected function populateState($ordering = null, $direction = null) {
+  protected function populateState($ordering = null, $direction = null)
+  {
     // Initialise variables.
     $app = JFactory::getApplication('administrator');
 
@@ -56,20 +61,19 @@ class EventsModelevents extends JModelList {
     $search = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
     $this->setState('filter.search', $search);
 
-    $published = $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-    $this->setState('filter.state', $published);
+		$state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $state);
 
+		$categoryId = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', '');
+		$this->setState('filter.category_id', $categoryId);
+    
 
-    //Filtering catid
-    $this->setState('filter.catid', $app->getUserStateFromRequest($this->context . '.filter.catid', 'filter_catid', '', 'string'));
+		// Load the parameters.
+		$params = JComponentHelper::getParams('com_events');
+		$this->setState('params', $params);
 
-
-    // Load the parameters.
-    $params = JComponentHelper::getParams('com_events');
-    $this->setState('params', $params);
-
-    // List state information.
-    parent::populateState('a.title', 'asc');
+		// List state information.
+		parent::populateState('a.time_start', 'desc');
   }
 
   /**
@@ -84,9 +88,11 @@ class EventsModelevents extends JModelList {
    * @since  1.6
    */
   protected function getStoreId($id = '') {
-    // Compile the store id.
-    $id.= ':' . $this->getState('filter.search');
-    $id.= ':' . $this->getState('filter.state');
+		// Compile the store id.
+		$id	.= ':'.$this->getState('filter.search');
+		$id	.= ':'.$this->getState('filter.access');
+		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.category_id');
 
     return parent::getStoreId($id);
   }
@@ -108,54 +114,62 @@ class EventsModelevents extends JModelList {
                     'list.select', 'a.*'
             )
     );
-    $query->from('`#__events_event` AS a');
+    $query->from($db->quoteName('#__events_event').' AS a');
 
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
-    // Join over the users for the checked out user.
-    $query->select('uc.name AS editor');
-    $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		// Join over the categories.
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
 
-    // Join over the category 'catid'
-    $query->select('catid.title AS catid');
-    $query->join('LEFT', '#__categories AS catid ON catid.id = a.catid');
+		// Filter by published state
+		$published = $this->getState('filter.state');
+		if (is_numeric($published)) {
+			$query->where('a.state = '.(int) $published);
+		} elseif ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		}
 
-
-    // Filter by published state
-    $published = $this->getState('filter.state');
-    if (is_numeric($published)) {
-      $query->where('a.state = ' . (int) $published);
-    } else if ($published === '') {
-      $query->where('(a.state IN (0, 1))');
-    }
-
-
-    // Filter by search in title
-    $search = $this->getState('filter.search');
-    if (!empty($search)) {
-      if (stripos($search, 'id:') === 0) {
-        $query->where('a.id = ' . (int) substr($search, 3));
-      } else {
-        $search = $db->Quote('%' . $db->getEscaped($search, true) . '%');
-        $query->where('( a.title LIKE ' . $search . '  OR  a.description LIKE ' . $search . '  OR  a.location LIKE ' . $search . '  OR  a.meeting_place LIKE ' . $search . ' )');
-      }
-    }
-
-
-
-    //Filtering catid
-    $filter_catid = $this->state->get("filter.catid");
-    if ($filter_catid) {
-      $query->where("a.catid = '" . $db->escape($filter_catid) . "'");
-    }
-
+		// Filter by category.
+		$categoryId = $this->getState('filter.category_id');
+		if (is_numeric($categoryId)) {
+			$query->where('a.catid = '.(int) $categoryId);
+		}
+    
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search))
+    {
+			if (stripos($search, 'id:') === 0)
+      {
+				$query->where('a.id = '.(int) substr($search, 3));
+			}
+      else
+      {
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+        $query->where(
+<<<SEARCH_QUERY_WHERE
+(
+  a.title LIKE {$search}
+  OR a.description LIKE {$search}
+  OR a.location LIKE {$search}
+  OR a.meeting_place LIKE {$search}
+)
+SEARCH_QUERY_WHERE
+        );
+			}
+		}
 
     // Add the list ordering clause.
-    $orderCol = $this->state->get('list.ordering');
-    $orderDirn = $this->state->get('list.direction');
-    if ($orderCol && $orderDirn) {
-      $query->order($db->getEscaped($orderCol . ' ' . $orderDirn));
-    }
-
+    $orderCol   = $this->state->get( 'list.ordering', 'a.time_start' );
+    $orderDirn  = $this->state->get( 'list.direction', 'ASC' );
+		if ($orderCol === 'category_title') {
+      $orderCol = "c.title {$orderDirn}, a.time_start";
+		}
+    $query->order( $db->getEscaped("{$orderCol} {$orderDirn}") );
+    
     return $query;
   }
 

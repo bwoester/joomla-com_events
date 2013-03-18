@@ -36,162 +36,116 @@ $params     = (isset($this->state->params)) ? $this->state->params : new JObject
     </div>
 
 		<div class="filter-select fltrt">
-			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
-
+      
 			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_events'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
-    </div>
+		</div>
 
   </fieldset>
 
   <div class="clr"> </div>
 
   <table class="adminlist">
+    <colgroup>
+      <col width="1%" />
+      <col />
+      <col />
+      <col />
+      <col />
+      <col />
+      <col />
+      <col width="1%" />
+    </colgroup>    
     <thead>
       <tr>
-        <th width="1%">
+        <th>
           <input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
         </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'JCATEGORY', 'a.catid', $listDirn, $listOrder); ?>
+        <th>
+          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_HEADING_TITLE', 'a.title', $listDirn, $listOrder); ?>
         </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_TITLE', 'a.title', $listDirn, $listOrder); ?>
+        <th>
+          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_HEADING_TIME_START', 'a.time_start', $listDirn, $listOrder); ?>
         </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_LOCATION', 'a.location', $listDirn, $listOrder); ?>
+        <th>
+          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_HEADING_LOCATION', 'a.location', $listDirn, $listOrder); ?>
         </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_TIME_START', 'a.time_start', $listDirn, $listOrder); ?>
+        <th>
+          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_HEADING_CANCELLED', 'a.cancelled', $listDirn, $listOrder); ?>
         </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_TIME_END', 'a.time_end', $listDirn, $listOrder); ?>
+				<th>
+					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+				</th>
+        <th>
+					<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
         </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_MEETING_PLACE', 'a.meeting_place', $listDirn, $listOrder); ?>
-        </th>
-        <th class='left'>
-          <?php echo JHtml::_('grid.sort', 'COM_EVENTS_EVENTS_MEETING_TIME', 'a.meeting_time', $listDirn, $listOrder); ?>
-        </th>
-
-
-        <?php if (isset($this->items[0]->state)) { ?>
-          <th width="5%">
-            <?php echo JHtml::_('grid.sort', 'JPUBLISHED', 'a.state', $listDirn, $listOrder); ?>
-          </th>
-        <?php } ?>
-
-        <?php if (isset($this->items[0]->ordering)) { ?>
-          <th width="10%">
-            <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
-            <?php if ($canOrder && $saveOrder) : ?>
-              <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'events.saveorder'); ?>
-            <?php endif; ?>
-          </th>
-        <?php } ?>
-
-        <?php if (isset($this->items[0]->id)) { ?>
-          <th width="1%" class="nowrap">
-            <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
-          </th>
-        <?php } ?>
+				<th>
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+				</th>
       </tr>
     </thead>
     <tfoot>
-      <?php
-      if (isset($this->items[0])) {
-        $colspan = count(get_object_vars($this->items[0]));
-      } else {
-        $colspan = 10;
-      }
-      ?>
-      <tr>
-        <td colspan="<?php echo $colspan ?>">
-<?php echo $this->pagination->getListFooter(); ?>
-        </td>
-      </tr>
+			<tr>
+				<td colspan="8">
+					<?php echo $this->pagination->getListFooter(); ?>
+				</td>
+			</tr>
     </tfoot>
     <tbody>
 
     <?php foreach ($this->items as $i => $item): ?>
       <?php
-      $ordering = ($listOrder == 'a.ordering');
-      $canCreate = $user->authorise('core.create', 'com_events');
-      $canEdit = $user->authorise('core.edit', 'com_events');
-      $canCheckin = $user->authorise('core.manage', 'com_events');
-      $canChange = $user->authorise('core.edit.state', 'com_events');
+      $canCreate  = $user->authorise( 'core.create'     , "com_events.category.{$item->catid}" );
+			$canEdit    = $user->authorise( 'core.edit'       , "com_events.category.{$item->catid}" );
+			$canCheckin = $user->authorise( 'core.manage'     , 'com_checkin')
+                    || $item->checked_out == $userId
+                    || $item->checked_out == 0;
+			$canChange  = $user->authorise( 'core.edit.state' , "com_events.category.{$item->catid}")
+                    && $canCheckin;
+      $id         = (int)$item->id;
+      $editUrl    = JRoute::_( "index.php?option=com_events&task=event.edit&id={$id}" );
       ?>
       <tr class="row<?php echo $i % 2; ?>">
         <td class="center">
-          <?php echo JHtml::_('grid.id', $i, $item->id); ?>
+          <?php echo JHtml::_('grid.id', $i, $id); ?>
         </td>
-
+				<td>
+          <?php
+          if ($item->checked_out) {
+            echo JHtml::_( 'jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'events.', $canCheckin );
+          }
+          ?>
+					<?php if ($canEdit): ?>
+            <a href="<?php echo $editUrl; ?>"><?php echo $this->escape( $item->title ); ?></a>
+					<?php else: ?>
+            <?php echo $this->escape( $item->title ); ?>
+					<?php endif; ?>
+				</td>
         <td>
-          <?php echo $item->catid; ?>
-        </td>
-        
-        <td>
-          <?php if (isset($item->checked_out) && $item->checked_out) : ?>
-            <?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'events.', $canCheckin); ?>
-          <?php endif; ?>
-          <?php if ($canEdit) : ?>
-            <a href="<?php echo JRoute::_('index.php?option=com_events&task=event.edit&id=' . (int) $item->id); ?>">
-              <?php echo $this->escape($item->title); ?></a>
-            <?php else : ?>
-            <?php echo $this->escape($item->title); ?>
-          <?php endif; ?>
-        </td>
-        <td>
-          <?php echo $item->location; ?>
+          <?php echo JHtml::_('date', $item->time_start, JText::_('DATE_FORMAT_LC2')); ?>
         </td>
         <td>
-          <?php echo $item->time_start; ?>
+          <?php echo $this->escape( $item->location ); ?>
         </td>
         <td>
-          <?php echo $item->time_end; ?>
+          <?php // TODO: implement toggle switch ?>
+          <?php echo ((int)$item->cancelled === 0) ? JText::_('JNO') : JText::_('JYES'); ?>
         </td>
-        <td>
-          <?php echo $item->meeting_place; ?>
-        </td>
-        <td>
-          <?php echo $item->meeting_time; ?>
-        </td>
-
-
-        <?php if (isset($this->items[0]->state)) { ?>
-          <td class="center">
-            <?php echo JHtml::_('jgrid.published', $item->state, $i, 'events.', $canChange, 'cb'); ?>
-          </td>
-        <?php } ?>
-        <?php if (isset($this->items[0]->ordering)) { ?>
-          <td class="order">
-            <?php if ($canChange) : ?>
-              <?php if ($saveOrder) : ?>
-                <?php if ($listDirn == 'asc') : ?>
-                  <span><?php echo $this->pagination->orderUpIcon($i, true, 'events.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                  <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'events.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                <?php elseif ($listDirn == 'desc') : ?>
-                  <span><?php echo $this->pagination->orderUpIcon($i, true, 'events.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                  <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'events.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                <?php endif; ?>
-              <?php endif; ?>
-              <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-              <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
-            <?php else : ?>
-              <?php echo $item->ordering; ?>
-            <?php endif; ?>
-          </td>
-        <?php } ?>
-        <?php if (isset($this->items[0]->id)) { ?>
-          <td class="center">
-            <?php echo (int) $item->id; ?>
-          </td>
-        <?php } ?>
+				<td>
+					<?php echo JHtml::_( 'jgrid.published', $item->state, $i, 'events.', $canChange ); ?>
+				</td>
+				<td>
+					<?php echo $this->escape( $item->category_title ); ?>
+				</td>
+				<td>
+					<?php echo $id; ?>
+				</td>        
       </tr>
       <?php endforeach; ?>
     </tbody>
