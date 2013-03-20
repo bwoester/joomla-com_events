@@ -13,146 +13,336 @@ class ComEventsRouter
 {
   const SEO_DATE_FORMAT = 'd-m-Y';
   const ISO_DATE_FORMAT = 'Y-m-d';
+  const ISO_DATE_FORMAT_STRFTIME = '%Y-%m-%d';
 
   const RE_SEO_DATE = '/^(?P<day>\d{2})-(?P<month>\d{2})-(?P<year>\d{4})$/';
+  
+  const VIEW_CALENDAR = 'calendar';
+  const VIEW_EVENTS   = 'events';
 
+  const FORMAT_HTML = 'html';
+  const FORMAT_ICAL = 'ical';
+  const FORMAT_JSON = 'json';
+  
+  const DEFAULT_VIEW    = 'events';
+  const DEFAULT_FORMAT  = 'html';
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
   /**
+   * Formats URL to: [/view][/YYYY-MM-DD-bis-YYYY-MM-DD][/format=json]
+   * - view is left out if it is the default view (events)
+   * - period is left out if neigther periodStart nor periodEnd are given
+   * - period is left out if view is 'calendar'
+   * - format is left out if it is the default format (html)
+   * - format is left out if it is the view is 'calendar'
+   * 
+   * Some examples:
+   * 
+   * ?option=com_events&view=events&periodStart=&periodEnd=&Itemid=509
+   * => /
+   * 
+   * ?option=com_events&view=events&periodStart=2013-03-22&periodEnd=2013-04-01&Itemid=509&format=json
+   * => /22-03-2013-bis-01-04-2013/format=json
+   * 
+   * ?option=com_events&view=calendar&periodStart=&periodEnd=&Itemid=509
+   * => /kalender
+   * 
    * @param	array	A named array
    * @return	array (
-   *   'view'         => default,
-   *   'periodStart'  => yyyy-mm-dd,
-   *   'periodLength' => int,         // period length in months
    *   'option'       => com_events,  // component name
+   *   'view'         => default,     // view name
+   *   'periodStart'  => yyyy-mm-dd,
+   *   'periodEnd'    => yyyy-mm-dd,
    *   'ItemId'       => int,         // menu item id
    * )
    */
   public static function buildRoute( &$query )
   {
-    $segments = array();
+    $segments = array(
+      'view'    => '',
+      'period'  => '',
+      'format'  => '',
+    );
 
-    if (isset($query['view']))
+    self::ensureView( $query );
+    self::ensureFormat( $query );
+    self::ensurePeriodStart( $query );
+    self::ensurePeriodEnd( $query );
+    
+    $view         = $query['view'];
+    $format       = $query['format'];
+    $periodStart  = $query['periodStart'];
+    $periodEnd    = $query['periodEnd'];
+    
+    unset( $query['view'], $query['format'], $query['periodStart'], $query['periodEnd'] );
+
+    $segments['period'] = self::constructPeriod( $periodStart, $periodEnd );
+    
+    switch ($format)
     {
-      if ($query['view'] === 'calendar')
-      {
-        $segments[] = 'kalender';
-      }
-
-      if ($query['view'] === 'events' && isset($query['format']) && $query['format'] === 'json')
-      {
-        $segments[] = 'json';
-        unset( $query['format'] );
-      }
-
-      unset( $query['view'] );
+    case self::DEFAULT_FORMAT:
+        // this is our default format, it's optional in the url
+        break;
+    default:
+        // all other formats go in as the last path segment
+        $segments['format'] = "format={$format}";
+        break;
     }
-
-    if (isset($query['periodStart']) && isset($query['periodLength']))
+    
+    switch ($view)
     {
-      $dateStart  = new DateTime( $query['periodStart'] );
-      $dateEnd    = DateTimeHelper::addMonths( clone $dateStart, $query['periodLength'] );
-
-      // substract one day (hide the fact that we're processing from
-      // 00:00 - 00:00, excluding the last day. Make it look like we're
-      // including both dates, from 00:00 - 24:00).
-      $dateEnd = DateTimeHelper::substractDays( $dateEnd, 1 );
-
-      // encode as YYYYMMDD-bis-YYYYMMDD
-      $segments[] =
-        $dateStart->format( self::SEO_DATE_FORMAT ) .
-        '-bis-' .
-        $dateEnd->format( self::SEO_DATE_FORMAT );
-
-      unset( $query['periodStart'], $query['periodLength'] );
+    case self::VIEW_CALENDAR:
+        // @todo use translations? how to parse the route?
+        // translate to german
+        $segments['view'] = 'kalender';
+        break;
+    case self::DEFAULT_VIEW:
+        // this is our default view, it's optional in the url
+        break;
+    default:
+      // all other views go in as the first path segment
+        $segments['view'] = $view;
+        break;
     }
-
-    return $segments;
+    
+    // view calendar does not support formats or periods
+    if ($view === self::VIEW_CALENDAR)
+    {
+      $segments['period'] = '';
+      $segments['format'] = '';
+    }
+    
+    // build up the segments array in the correct order, filter out all empty 
+    // elements (false, null, '' <-- we use those empty strings), then return it.
+    return array_filter(array(
+      $segments['view'],
+      $segments['period'],
+      $segments['format'],
+    ));
   }
+  
+  /////////////////////////////////////////////////////////////////////////////
   
   /**
    * @param	array	A named array
    * @param	array
-   *
-   * Recognized formats:
-   * /YYYYMMDD-bis-YYYYMMDD
-   * /view/YYYYMMDD-bis-YYYYMMDD
-   *
-   * Damn Joomla core modifies my created routes (related to slug concept, but
-   * we don't use IDs here). The first '-' will always be replaced by ':'...
+   * 
+   * Parses URLs of format: [/view][/YYYY-MM-DD-bis-YYYY-MM-DD][/format=json]
+   * 
+   * Some examples:
+   * 
+   * /
+   * => ?view=events&periodStart=&periodEnd=
+   * 
+   * /kalender
+   * => ?view=calendar
+   * 
+   * /format=json
+   * => ?view=events&periodStart=&periodEnd=&format=json
+   * 
+   * /events/format=ical
+   * => ?view=events&periodStart=&periodEnd=&format=ical
+   * 
+   * /22-03-2013-bis-01-04-2013
+   * => ?view=events&periodStart=2013-03-22&periodEnd=2013-04-01
+   * 
+   * /22-03-2013-bis-01-04-2013/format=json
+   * => ?view=events&periodStart=2013-03-22&periodEnd=2013-04-01&format=json
+   * 
+   * - default view is 'events'
+   * - period is optional. If not given, the component will use the menu's params
+   * - default format is html
    */
   public static function parseRout( $segments )
   {
-    $vars = array();
+    $query = array(
+      'view'        => self::DEFAULT_VIEW,
+      'periodStart' => '',
+      'periodEnd'   => '',
+      'format'      => self::DEFAULT_FORMAT,
+    );   
 
     // Fix joomla behavior we don't want here
-		$total = count($segments);
-		for ($i=0; $i<$total; $i++)  {
-			$segments[$i] = preg_replace( '/:/', '-', $segments[$i], 1 );
-		}
+    self::fixSegments( $segments );
 
-    // remove trailing query parameters
-    $lastIndex = count($segments)-1;
-    $lastSegment = $segments[$lastIndex];
-    $aParts = explode('&', $lastSegment);
-    $segments[$lastIndex] = $aParts[0];
-    for ($i=1; $i<count($aParts); $i++)
+    foreach ($segments as $segment)
     {
-      list($key, $value) = explode('=', $aParts[$i]);
-      $vars[$key] = $value;
-    }
-
-    if (count($segments) === 1)
-    {
-      if ($segments[0] === 'kalender')
+      // we found a format segment!
+      if (strpos($segment,'format=') !== false)
       {
-        $vars['view'] = 'calendar';
+        $aFormatPieces = explode( '=', $segment );
+        array_shift( $aFormatPieces );
+        $query['format'] = implode( '=', $aFormatPieces );
+        continue;
       }
-      else if ($segments[0] === 'json')
+      
+      // we found a period segment!
+      $aPeriodParts = explode( '-', $segment );
+      if (count($aPeriodParts) === 7)
       {
-        $vars['view'] = 'events';
-        $vars['format'] = 'json';
+        // example: 22-03-2013-bis-01-04-2013
+        // meaning: dd mm yyyy  -  dd mm yyyy
+        // index..:  0  1    2   3  4  5    6
+        $dateStart  = new DateTime( "{$aPeriodParts[2]}-{$aPeriodParts[1]}-{$aPeriodParts[0]}" );
+        $dateEnd    = new DateTime( "{$aPeriodParts[6]}-{$aPeriodParts[5]}-{$aPeriodParts[4]}" );
+        
+        // add one day (correction from create route).
+        $dateEnd = DateTimeHelper::addDays( $dateEnd, 1 );
+        
+        $query['periodStart'] = $dateStart->format( self::ISO_DATE_FORMAT );
+        $query['periodEnd']   = $dateEnd->format( self::ISO_DATE_FORMAT );
+        
+        continue;
       }
-      else
+      
+      // if we make it till here, we found a view segment!
+      switch ($segment)
       {
-        $period = array_shift( $segments );
-        $aParts = explode('-', $period);
-
-        if (count($aParts) === 7)
-        {
-          $periodStart  = implode( '-', array($aParts[0],$aParts[1],$aParts[2]) );
-          $periodEnd    = implode( '-', array($aParts[4],$aParts[5],$aParts[6]) );
-
-          preg_match( self::RE_SEO_DATE, $periodStart, $aParts );
-          $dateStart = new DateTime( "{$aParts['year']}-{$aParts['month']}-{$aParts['day']}" );
-
-          preg_match( self::RE_SEO_DATE, $periodEnd, $aParts );
-          $dateEnd = new DateTime( "{$aParts['year']}-{$aParts['month']}-{$aParts['day']}" );
-
-          // add one day (correction from create route).
-          $dateEnd = DateTimeHelper::addDays( $dateEnd, 1 );
-
-          $vars['periodStart']  = $dateStart->format( self::ISO_DATE_FORMAT );
-
-          $yearStart  = (int)$dateStart->format( 'Y' );
-          $monthStart = (int)$dateStart->format( 'n' );
-          $yearEnd    = (int)$dateEnd->format( 'Y' );
-          $monthEnd   = (int)$dateEnd->format( 'n' );
-
-          $vars['periodLength'] = 12*($yearEnd-$yearStart) + ($monthEnd-$monthStart);
-        }
+      case 'kalender':
+          $query['view'] = self::VIEW_CALENDAR;
+          break;
+      default:
+          $query['view'] = $segment;
+          break;
       }
     }
 
-    return $vars;
+    // view calendar does not support formats or periods
+    if ($query['view'] === self::VIEW_CALENDAR) {
+      unset( $query['periodStart'], $query['periodEnd'], $query['format'] );
+    }
+    
+    // format html is joomla default
+    if ($query['format'] === self::FORMAT_HTML) {
+      unset( $query['format'] );
+    }
+    
+    return $query;
   }
   
+  /////////////////////////////////////////////////////////////////////////////
+  
+  /**
+   * Joomla core modifies my created routes (related to slug concept, but
+   * we don't use IDs here). The first '-' in a segment will always be replaced
+   * by a ':'...
+   */
+  static private function fixSegments( &$segments )
+  {
+		for ($i=0; $i<count($segments); $i++)  {
+			$segments[$i] = preg_replace( '/:/', '-', $segments[$i], 1 );
+		}    
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  static private function constructPeriod( $periodStart, $periodEnd )
+  {
+    if ($periodStart === '' || $periodEnd === '') {
+      return '';
+    }
+
+    $dateStart  = new DateTime( $periodStart );
+    $dateEnd    = new DateTime( $periodEnd );
+
+    // substract one day (hide the fact that we're processing from
+    // 00:00 - 00:00, excluding the last day. Make it look like we're
+    // including both dates, from 00:00 - 24:00).
+    // 
+    // Example:
+    // We want to show all events for January.
+    // This is the range: 2000/01/01 00:00 till 2000/02/01 00:00
+    // We display it as:  2000/01/01 - 2000/01/31
+    $dateEnd = DateTimeHelper::substractDays( $dateEnd, 1 );
+
+    // encode as YYYYMMDD-bis-YYYYMMDD
+    return $dateStart->format( self::SEO_DATE_FORMAT )
+      . '-bis-'
+      . $dateEnd->format( self::SEO_DATE_FORMAT );
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  private static function ensureView( &$query )
+  {
+    if (!isset($query['view'])) {
+      $query['view'] = self::DEFAULT_VIEW;
+    }
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  private static function ensureFormat( &$query )
+  {
+    if (!isset($query['format'])) {
+      $query['format'] = self::DEFAULT_FORMAT;
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
+  
+  private static function ensurePeriodStart( &$query )
+  {
+    // if it is set, validate value. Unset if value is not recognized.
+    if (isset($query['periodStart']))
+    {
+      $result = strptime( $query['periodStart'], self::ISO_DATE_FORMAT_STRFTIME );
+      
+      if ($result === false) {
+        unset( $query['periodStart'] );
+      }
+    }
+    
+    // if it is not set, set it to its default value
+    if (!isset($query['periodStart'])) {
+      $query['periodStart'] = '';
+    }
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  private static function ensurePeriodEnd( &$query )
+  {
+    // if it is set, validate value. Unset if value is not recognized.
+    if (isset($query['periodEnd']))
+    {
+      $result = strptime( $query['periodEnd'], self::ISO_DATE_FORMAT_STRFTIME );
+      
+      if ($result === false) {
+        unset( $query['periodEnd'] );
+      }
+    }
+    
+    // if it is not set, set it to its default value
+    if (!isset($query['periodEnd']))
+    {
+      $query['periodEnd'] = '';
+    }
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
 
 function EventsBuildRoute(&$query)
 {
   return ComEventsRouter::buildRoute( $query );
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 function EventsParseRoute( $segments )
 {
   return ComEventsRouter::parseRout( $segments );
 }
+
+///////////////////////////////////////////////////////////////////////////////

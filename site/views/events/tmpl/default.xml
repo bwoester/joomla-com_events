@@ -7,44 +7,18 @@
 
   <fields name="request">
     <fieldset name="request">
-      <field  name="periodStartOption"
-              type="list"
-              default="5"
-              label="COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_LABEL"
-              description="COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_DESC"
-              >
-        <option value="0">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_DAY</option>
-        <option value="1">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_WEEK</option>
-        <option value="2">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_MONTH</option>
-        <option value="3">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_YEAR</option>
-        <option value="4">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_FIXED_DATE</option>
-        <option value="5">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_RELATIVE</option>
-      </field>
+      
       <field  name="periodStart"
               type="calendar"
               label="COM_EVENTS_EVENTS_FIELD_PERIOD_START_LABEL"
               description="COM_EVENTS_EVENTS_FIELD_PERIOD_START_DESC"
               />
-      <field  name="periodLength"
-              type="integer"
-              default="6"
-              first="1"
-              last="52"
-              step="1"
-              label="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_LABEL"
-              description="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_DESC"
+      <field  name="periodEnd"
+              type="calendar"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_END_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_END_DESC"
               />
-      <field  name="periodUnit"
-              type="list"
-              default="2"
-              label="COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_LABEL"
-              description="COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_DESC"
-              >
-        <option value="0">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_DAYS</option>
-        <option value="1">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_WEEKS</option>
-        <option value="2">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_MONTHS</option>
-        <option value="3">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_YEARS</option>
-      </field>
+      
     </fieldset>
   </fields>
 
@@ -58,6 +32,46 @@
   -->
   <fields name="params">
 
+    <!-- results in COM_MENUS_PERIOD_FIELDSET_LABEL -->
+    <fieldset name="PERIOD">
+      
+      <field  name="periodStartOption"
+              type="list"
+              default="0"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_DESC"
+              >
+        <option value="0">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_DAY</option>
+        <option value="1">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_WEEK</option>
+        <option value="2">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_MONTH</option>
+        <option value="3">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_CURRENT_YEAR</option>
+        <option value="4">COM_EVENTS_EVENTS_FIELD_PERIOD_START_OPTION_OPTION_DYNAMIC</option>
+      </field>
+      
+      <field  name="periodLength"
+              type="integer"
+              default="6"
+              first="1"
+              last="52"
+              step="1"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_LENGTH_DESC"
+              />
+      
+      <field  name="periodUnit"
+              type="list"
+              default="2"
+              label="COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_LABEL"
+              description="COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_DESC"
+              >
+        <option value="0">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_DAYS</option>
+        <option value="1">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_WEEKS</option>
+        <option value="2">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_MONTHS</option>
+        <option value="3">COM_EVENTS_EVENTS_FIELD_PERIOD_UNIT_OPTION_YEARS</option>
+      </field>
+      
+    </fieldset>
+    
     <!-- results in COM_MENUS_OPTIONS_FIELDSET_LABEL -->
     <fieldset name="OPTIONS">
       
