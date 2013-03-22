@@ -19,9 +19,20 @@ class DateTimeHelper
     return 7*24*60*60;
   }
 
+  /**
+   * @return int in range 1 (monday) - 7 (sunday)
+   */
   static public function dayOfTheWeek()
   {
-    return date('d');
+    return date('N');
+  }
+
+  /**
+   * @return int in range 1 - 53 (in rare cases, a year has 53 calendar weeks)
+   */
+  static public function weekOfTheYear( $timestamp=null )
+  {
+    return date('W',$timestamp === null ? time() : $timestamp );
   }
 
   static public function timestampYesterday()
@@ -46,10 +57,6 @@ class DateTimeHelper
 
   static public function timestampThisWeek()
   {
-    // dayOfTheWeek := Monday (1)   => today - 0
-    // dayOfTheWeek := Tuesday (2)  => today - 1*secondsOneDay
-    // ...
-    // return self::timestampToday() - ((self::dayOfTheWeek()-1) * self::secondsOneDay());
     return strtotime( 'this week' );
   }
 
@@ -87,11 +94,62 @@ class DateTimeHelper
   {
     return mktime(0, 0, 0, 1, 1, date('Y')+1);
   }
+  
+  static public function timestampLastDecade()
+  {
+    $currentYear = date('Y');
+    $decade = (floor($currentYear / 10) - 1) * 10;
+    return mktime(0, 0, 0, 1, 1, $decade);
+  }
+
+  static public function timestampThisDecade()
+  {
+    $currentYear = date('Y');
+    $decade = floor($currentYear / 10) * 10;
+    return mktime(0, 0, 0, 1, 1, $decade);
+  }
+
+  static public function timestampNextDecade()
+  {
+    $currentYear = date('Y');
+    $decade = (floor($currentYear / 10) + 1) * 10;
+    return mktime(0, 0, 0, 1, 1, $decade);
+  }
+  
+  /**
+   * Returns the timestamp of the beginning (Monday 00:00) of the given
+   * calendar week.
+   * 
+   * If you want to get Tuesday 00:00, specify $day = 2.
+   * For Wednesday 00:00, specify $day = 3.
+   * ...
+   * Sunday 00:00, specify $day = 7.
+   * 
+   * @param int $calendarWeek
+   * @param int $year four digits!
+   * @param int $day four digits!
+   * @return int
+   */
+  static public function timestampCalendarWeek( $calendarWeek, $year=null, $day=1 )
+  {
+    if ($year === null) {
+      $year = date('Y');
+    }
+    
+    $calendarWeek = str_pad( $calendarWeek, 2, 0, STR_PAD_LEFT );
+    
+    return strtotime("{$year}W{$calendarWeek}{$day}");
+  }
 
   static public function fromTimestamp( $timestamp )
   {
     $iso = date( self::ISO_FORMAT, $timestamp );
     return new DateTime( $iso );
+  }
+
+  static public function toTimestamp( DateTime $obj )
+  {
+    return (int)$obj->format('U');
   }
 
   static public function yesterday()
@@ -163,6 +221,24 @@ class DateTimeHelper
   static public function nextYear()
   {
     $iso = date( self::ISO_FORMAT, self::timestampNextYear() );
+    return new DateTime( $iso );
+  }
+
+  static public function lastDecade()
+  {
+    $iso = date( self::ISO_FORMAT, self::timestampLastDecade() );
+    return new DateTime( $iso );
+  }
+
+  static public function thisDecade()
+  {
+    $iso = date( self::ISO_FORMAT, self::timestampThisDecade() );
+    return new DateTime( $iso );
+  }
+
+  static public function nextDecade()
+  {
+    $iso = date( self::ISO_FORMAT, self::timestampNextDecade() );
     return new DateTime( $iso );
   }
 
