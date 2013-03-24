@@ -85,6 +85,13 @@ class EventsModelEvents extends JModel
 
   /////////////////////////////////////////////////////////////////////////////
   
+  private function getMenuParams()
+  {
+    return $this->state->get("parameters.menu");
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
   /**
    * Returns the value that has been configured for the ical help article.
    * @return bool
@@ -117,8 +124,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamPeriodStartOption()
   {
-    return (int)JComponentHelper::getParams('com_events')
-      ->get( 'periodStartOption', PeriodStartOption::_DEFAULT_ );
+    $periodStartOption = $this->getMenuParams()->get( 'periodStartOption', PeriodStartOption::_DEFAULT_ );
+    return (int)$periodStartOption;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -129,8 +136,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamPeriodLength()
   {
-    return (int)JComponentHelper::getParams('com_events')
-      ->get( 'periodLength', PeriodLength::_DEFAULT_ );
+    $periodLength = $this->getMenuParams()->get( 'periodLength', PeriodLength::_DEFAULT_ );
+    return (int)$periodLength;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -141,8 +148,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamPeriodUnit()
   {
-    return (int)JComponentHelper::getParams('com_events')
-      ->get( 'periodUnit', PeriodUnit::_DEFAULT_ );
+    $periodUnit = $this->getMenuParams()->get( 'periodUnit', PeriodUnit::_DEFAULT_ );
+    return (int)$periodUnit;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -153,8 +160,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamCatId()
   {
-    return (int)JComponentHelper::getParams('com_events')
-      ->get( 'catid', 0 );
+    $catid = $this->getMenuParams()->get( 'catid', 0 );
+    return (int)$catid;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -165,8 +172,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamShowPrintAction()
   {
-    return (bool)JComponentHelper::getParams('com_events')
-      ->get( 'showPrintAction', false );
+    $showPrintAction = $this->getMenuParams()->get( 'showPrintAction', false );
+    return (bool)$showPrintAction;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -177,8 +184,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamHeader()
   {
-    return (string)JComponentHelper::getParams('com_events')
-      ->get( 'header', '' );
+    $header = $this->getMenuParams()->get( 'header', '' );
+    return (string)$header;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -189,8 +196,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamFooter()
   {
-    return (string)JComponentHelper::getParams('com_events')
-      ->get( 'footer', '' );
+    $footer = $this->getMenuParams()->get( 'footer', '' );
+    return (string)$footer;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -202,8 +209,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamPeriodStart()
   {
-    $val = JFactory::getApplication()->input->get('periodStart', '', 'string');
-    return $val === '' ? null : new DateTime( $val );
+    $periodStart = JFactory::getApplication()->input->get('periodStart', '', 'string');
+    return $periodStart === '' ? null : new DateTime( $periodStart );
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -215,8 +222,8 @@ class EventsModelEvents extends JModel
    */
   private function getParamPeriodEnd()
   {
-    $val = JFactory::getApplication()->input->get('periodEnd', '', 'string');
-    return $val === '' ? null : new DateTime( $val );
+    $periodEnd = JFactory::getApplication()->input->get('periodEnd', '', 'string');
+    return $periodEnd === '' ? null : new DateTime( $periodEnd );
   }
 
   /////////////////////////////////////////////////////////////////////////////
