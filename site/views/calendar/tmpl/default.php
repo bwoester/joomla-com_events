@@ -54,8 +54,12 @@ jQuery(document).ready(function() {
     events: "'.$calendarModel->getLinkEvents().'",
     eventRender: function( event, element )
     {
-      var spanCancelled = \''.$spanCancelled.'\';
-      element.find(".fc-event-inner").append( spanCancelled );
+      if (event.cancelled)
+      {
+        var spanCancelled = \''.$spanCancelled.'\';
+        element.find(".fc-event-inner").append( spanCancelled );
+      }
+      
       element.find(".fc-event-title").qtip({
         content: event.tooltip,
         style: {
