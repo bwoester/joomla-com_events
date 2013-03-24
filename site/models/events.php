@@ -458,7 +458,7 @@ class EventsModelEvents extends JModel
     $paramPeriodEnd   = $this->getParamPeriodEnd();
     
     if ($paramPeriodStart instanceof DateTime && $paramPeriodEnd instanceof DateTime) {
-      return $paramPeriodStart;
+      return $paramPeriodEnd;
     }
     
     $periodStart  = $this->getPeriodStart();
