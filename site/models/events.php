@@ -87,12 +87,26 @@ class EventsModelEvents extends JModel
   
   /**
    * Returns the value that has been configured for the ical help article.
-   * @return string
+   * @return bool
    */
-  public function getParamICalHelpArticle()
+  private function getParamShowICalHelpArticle()
   {
-    return (string)JComponentHelper::getParams('com_events')
-      ->get( 'iCalHelpArticle', '' );
+    $showICalHelpArticle = JComponentHelper::getParams('com_events')
+      ->get( 'showICalHelpArticle', false );
+    return (bool)$showICalHelpArticle;
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  /**
+   * Returns the value that has been configured for the ical help article.
+   * @return int
+   */
+  private function getParamICalHelpArticleId()
+  {
+    $iCalHelpArticleId = JComponentHelper::getParams('com_events')
+      ->get( 'iCalHelpArticleId', 0 );
+    return (int)$iCalHelpArticleId;
   }
   
   /////////////////////////////////////////////////////////////////////////////
@@ -470,9 +484,10 @@ class EventsModelEvents extends JModel
   /**
    * @return bool
    */
-  public function showLinkICalendarHelp()
+  public function showLinkICalHelpArticle()
   {
-    return $this->getParamICalHelpArticle() !== '';
+    return $this->getParamShowICalHelpArticle()
+      && $this->getParamICalHelpArticleId() !== 0;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -538,9 +553,20 @@ class EventsModelEvents extends JModel
   /**
    * @return string
    */
-  public function getLinkICalendar()
+  public function getLinkICal()
   {
     return JRoute::_( "index.php?view=events&format=ical" );
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
+  
+  /**
+   * @return string
+   */
+  public function getLinkICalHelpArticle()
+  {
+    $paramICalHelpArticleId = $this->getParamICalHelpArticleId();
+    return JRoute::_( "index.php?option=com_content&view=article&id={$paramICalHelpArticleId}" );
   }
 
   /////////////////////////////////////////////////////////////////////////////

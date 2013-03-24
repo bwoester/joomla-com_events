@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+  
   <fieldset name="component"
-    label="COM_EVENTS_COMPONENT_LABEL"
-    description="COM_EVENTS_COMPONENT_DESC"
-  >
+            label="COM_EVENTS_COMPONENT_LABEL"
+            description="COM_EVENTS_COMPONENT_DESC"
+            addfieldpath="/administrator/components/com_content/models/fields"
+            >
 
-        <field name="test"
-             type="radio"
-             default="1"
-             label="COM_EVENTS_TEST_LABEL"
-             description="COM_EVENTS_TEST_DESC">
-                 <option value="0">JHIDE</option>
-                 <option value="1">JSHOW</option>
-         </field>
-
-    <!--
-    TODO: this could be a special field that allows to select an article
-    @see "http://www.spiralscripts.co.uk/Joomla-Tips/creating-custom-parameters-in-joomla-16.html"
-    -->
-    <field
-      name="iCalHelpArticle"
-      type="text"
-      default="/hilfe/iCalendar"
-      label="COM_EVENTS_ICALHELP_LABEL"
-      description="COM_EVENTS_ICALHELP_DESC"
-      >
+    <field  name="showICalHelpArticle"
+            type="radio"
+            required="true"
+            default="0"
+            label="COM_EVENTS_CONFIG_FIELD_SHOWICALHELPARTICLE_LABEL"
+            description="COM_EVENTS_CONFIG_FIELD_SHOWICALHELPARTICLE_DESC">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
     </field>
 
+    <!-- requires addfieldpath="/administrator/components/com_content/models/fields" in the fieldset element -->
+    <field  name="iCalHelpArticleId"
+            type="modal_article"
+            required="false"
+            label="COM_EVENTS_CONFIG_FIELD_ICALHELPARTICLEID_LABEL"
+            description="COM_EVENTS_CONFIG_FIELD_ICALHELPARTICLEID_DESC"
+    />
 
   </fieldset>
 
