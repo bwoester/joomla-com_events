@@ -616,8 +616,8 @@ class EventsModelEvents extends JModel
         break;
     }
     
-    $strLaterStart  = $laterEnd->format( DateTimeHelper::ISO_DATE_FORMAT );
-    $strLaterEnd    = $laterStart->format( DateTimeHelper::ISO_DATE_FORMAT );
+    $strLaterStart  = $laterStart->format( DateTimeHelper::ISO_DATE_FORMAT );
+    $strLaterEnd    = $laterEnd->format( DateTimeHelper::ISO_DATE_FORMAT );
     
     return JRoute::_( "index.php?periodStart={$strLaterStart}&periodEnd={$strLaterEnd}" );
   }
