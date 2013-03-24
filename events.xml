@@ -51,6 +51,7 @@
   </files>
 
   <languages folder="site">
+    <language tag="de-DE">language/de-DE/de-DE.com_events.ini</language>
     <language tag="en-GB">language/en-GB/en-GB.com_events.ini</language>
   </languages>
 
@@ -87,6 +88,8 @@
     </files>
 
     <languages folder="administrator">
+      <language tag="de-DE">language/de-DE/de-DE.com_events.ini</language>
+      <language tag="de-DE">language/de-DE/de-DE.com_events.sys.ini</language>
       <language tag="en-GB">language/en-GB/en-GB.com_events.ini</language>
       <language tag="en-GB">language/en-GB/en-GB.com_events.sys.ini</language>
     </languages>
