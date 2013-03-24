@@ -99,19 +99,19 @@ $eventsModel = $this->eventsModel;
   <li>
     <?php if ($eventsModel->showLinkEarlier()): ?>
     <a href="<?php echo $eventsModel->getLinkEarlier(); ?>">
-      <?php echo $eventsModel->getPeriodLength(); ?> Monate zurück
+      <?php echo "{$eventsModel->getPeriodLength()} {$eventsModel->getPeriodUnitAsString()}"; ?> zurück
     </a>
     <?php else: ?>
-      <?php echo $eventsModel->getPeriodLength(); ?> Monate zurück
+      <?php echo "{$eventsModel->getPeriodLength()} {$eventsModel->getPeriodUnitAsString()}"; ?> zurück
     <?php endif; ?>
   </li>
   <li>
     <?php if ($eventsModel->showLinkLater()): ?>
     <a href="<?php echo $eventsModel->getLinkLater(); ?>">
-      <?php echo $eventsModel->getPeriodLength(); ?> Monate vor
+      <?php echo "{$eventsModel->getPeriodLength()} {$eventsModel->getPeriodUnitAsString()}"; ?> vor
     </a>
     <?php else: ?>
-      <?php echo $eventsModel->getPeriodLength(); ?> Monate vor
+      <?php echo "{$eventsModel->getPeriodLength()} {$eventsModel->getPeriodUnitAsString()}"; ?> vor
     <?php endif; ?>
   </li>
 </ul>

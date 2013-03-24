@@ -478,7 +478,42 @@ class EventsModelEvents extends JModel
     
     return $periodEnd;
   }
-
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  public function getPeriodLength()
+  {
+    return $this->getParamPeriodLength();
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  
+  public function getPeriodUnitAsString()
+  {
+    $paramPeriodUnit = $this->getParamPeriodUnit();
+    
+    switch ($paramPeriodUnit)
+    {
+    case PeriodUnit::DAYS:
+        $text = 'COM_EVENTS_N_DAYS';
+        break;
+    case PeriodUnit::DECADES:
+        $text = 'COM_EVENTS_N_DECADES';
+        break;
+    case PeriodUnit::MONTHS:
+        $text = 'COM_EVENTS_N_MONTHS';
+        break;
+    case PeriodUnit::WEEKS:
+        $text = 'COM_EVENTS_N_WEEKS';
+        break;
+    case PeriodUnit::YEARS:
+        $text = 'COM_EVENTS_N_YEARS';
+        break;
+    }
+    
+    return JText::plural( $text, $this->getParamPeriodLength() );
+  }
+  
   /////////////////////////////////////////////////////////////////////////////
   
   /**
@@ -506,10 +541,33 @@ class EventsModelEvents extends JModel
   
   public function getLinkEarlier()
   {
-    $earlier = DateTimeHelper::substractMonths( $this->getPeriodStart(), $this->getPeriodLength() );
-    $strNewStart = $earlier->format( DateTimeHelper::ISO_DATE_FORMAT );
-    $strPeriodLength = $this->getPeriodLength();
-    return JRoute::_( "index.php?view=default&periodStart={$strNewStart}&periodLength={$strPeriodLength}" );
+    $earlierEnd = $this->getPeriodStart();
+    $paramPeriodLength = $this->getParamPeriodLength();
+    $paramPeriodUnit = $this->getParamPeriodUnit();
+    
+    switch ($paramPeriodUnit)
+    {
+    case PeriodUnit::DAYS:
+        $earlierStart = DateTimeHelper::substractDays( clone $earlierEnd, $paramPeriodLength );
+        break;
+    case PeriodUnit::DECADES:
+        $earlierStart = DateTimeHelper::substractDecades( clone $earlierEnd, $paramPeriodLength );
+        break;
+    case PeriodUnit::MONTHS:
+        $earlierStart = DateTimeHelper::substractMonths( clone $earlierEnd, $paramPeriodLength );
+        break;
+    case PeriodUnit::WEEKS:
+        $earlierStart = DateTimeHelper::substractWeeks( clone $earlierEnd, $paramPeriodLength );
+        break;
+    case PeriodUnit::YEARS:
+        $earlierStart = DateTimeHelper::substractYears( clone $earlierEnd, $paramPeriodLength );
+        break;
+    }
+    
+    $strEarlierStart  = $earlierStart->format( DateTimeHelper::ISO_DATE_FORMAT );
+    $strEarlierEnd    = $earlierEnd->format( DateTimeHelper::ISO_DATE_FORMAT );
+    
+    return JRoute::_( "index.php?periodStart={$strEarlierStart}&periodEnd={$strEarlierEnd}" );
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -528,10 +586,33 @@ class EventsModelEvents extends JModel
   
   public function getLinkLater()
   {
-    $later = $this->getPeriodEnd();
-    $strNewStart = $later->format( DateTimeHelper::ISO_DATE_FORMAT );
-    $strPeriodLength = $this->getPeriodLength();
-    return JRoute::_( "index.php?view=default&periodStart={$strNewStart}&periodLength={$strPeriodLength}" );
+    $laterStart = $this->getPeriodEnd();
+    $paramPeriodLength = $this->getParamPeriodLength();
+    $paramPeriodUnit = $this->getParamPeriodUnit();
+    
+    switch ($paramPeriodUnit)
+    {
+    case PeriodUnit::DAYS:
+        $laterEnd = DateTimeHelper::addDays( clone $laterStart, $paramPeriodLength );
+        break;
+    case PeriodUnit::DECADES:
+        $laterEnd = DateTimeHelper::addDecades( clone $laterStart, $paramPeriodLength );
+        break;
+    case PeriodUnit::MONTHS:
+        $laterEnd = DateTimeHelper::addMonths( clone $laterStart, $paramPeriodLength );
+        break;
+    case PeriodUnit::WEEKS:
+        $laterEnd = DateTimeHelper::addWeeks( clone $laterStart, $paramPeriodLength );
+        break;
+    case PeriodUnit::YEARS:
+        $laterEnd = DateTimeHelper::addYears( clone $laterStart, $paramPeriodLength );
+        break;
+    }
+    
+    $strLaterStart  = $laterEnd->format( DateTimeHelper::ISO_DATE_FORMAT );
+    $strLaterEnd    = $laterStart->format( DateTimeHelper::ISO_DATE_FORMAT );
+    
+    return JRoute::_( "index.php?periodStart={$strLaterStart}&periodEnd={$strLaterEnd}" );
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -593,7 +674,7 @@ class EventsModelEvents extends JModel
   {
     $from   = DateTimeHelper::today();
     $to     = DateTimeHelper::tomorrow();
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     return $this->getEvents( $from, $to, $catid );
   }
 
@@ -603,7 +684,7 @@ class EventsModelEvents extends JModel
   {
     $from   = DateTimeHelper::thisWeek();
     $to     = DateTimeHelper::nextWeek();
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     return $this->getEvents( $from, $to, $catid );
   }
 
@@ -613,7 +694,7 @@ class EventsModelEvents extends JModel
   {
     $from   = DateTimeHelper::thisMonth();
     $to     = DateTimeHelper::nextMonth();
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     return $this->getEvents( $from, $to, $catid );
   }
 
@@ -641,7 +722,7 @@ class EventsModelEvents extends JModel
       $from = DateTimeHelper::addMonths( DateTimeHelper::thisYear(), 9 );
     }
 
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     
     return $this->getEvents( $from, DateTimeHelper::addMonths(clone $from,3), $catid );
   }
@@ -664,7 +745,7 @@ class EventsModelEvents extends JModel
       $from = DateTimeHelper::addMonths( DateTimeHelper::thisYear(), 6 );
     }
 
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     
     return $this->getEvents( $from, DateTimeHelper::addMonths(clone $from,6), $catid );
   }
@@ -675,7 +756,7 @@ class EventsModelEvents extends JModel
   {
     $from   = DateTimeHelper::thisYear();
     $to     = DateTimeHelper::nextYear();
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     return $this->getEvents( $from, $to, $catid );
   }
 
@@ -685,10 +766,21 @@ class EventsModelEvents extends JModel
   {
     $from   = $this->getPeriodStart();
     $to     = $this->getPeriodEnd();
-    $catid  = $this->getCatId();
+    $catid  = $this->getParamCatId();
     return $this->getEvents( $from, $to, $catid );
   }
 
+  /////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Returns the category id. Category id 0 means: All categories.
+   * @return int
+   */
+  public function getCatId()
+  {
+    return $this->getParamCatId();
+  }
+  
   /////////////////////////////////////////////////////////////////////////////
   
   /**

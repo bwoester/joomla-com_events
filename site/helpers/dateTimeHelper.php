@@ -284,6 +284,13 @@ class DateTimeHelper
     return $dateTime;
   }
 
+  static public function addDecades( DateTime $dateTime, $numberOfDecades=1 )
+  {
+    $numberOfYears = 10 * $numberOfDecades;
+    $dateTime->modify("+{$numberOfYears} years");
+    return $dateTime;
+  }
+
   static public function substractSeconds( DateTime $dateTime, $numberOfSeconds=1 )
   {
     $dateTime->modify("-{$numberOfSeconds} seconds");
@@ -322,6 +329,13 @@ class DateTimeHelper
 
   static public function substractYears( DateTime $dateTime, $numberOfYears=1 )
   {
+    $dateTime->modify("-{$numberOfYears} years");
+    return $dateTime;
+  }
+
+  static public function substractDecades( DateTime $dateTime, $numberOfDecades=1 )
+  {
+    $numberOfYears = 10 * $numberOfDecades;
     $dateTime->modify("-{$numberOfYears} years");
     return $dateTime;
   }
