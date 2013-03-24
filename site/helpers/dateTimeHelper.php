@@ -57,7 +57,13 @@ class DateTimeHelper
 
   static public function timestampThisWeek()
   {
-    return strtotime( 'this week' );
+    // seems to be buggy.
+    // On Su, 2013/03/24, it returned timestamp of Mo, 2013/03/25
+    //                    instead of  timestamp of Mo, 2013/03/18
+    //                    
+    // return strtotime( 'this week' );
+    
+    return self::timestampCalendarWeek( self::weekOfTheYear() );
   }
 
   static public function timestampNextWeek()
