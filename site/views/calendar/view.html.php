@@ -34,6 +34,8 @@ class EventsViewCalendar extends JView
 
     $this->calendarModel = $this->getModel( 'calendar' );
 
+    JHtml::_( 'stylesheet', 'com_events/com_events/com_events.css', array(), true );    
+    
     parent::display($tpl);
 	}
 }

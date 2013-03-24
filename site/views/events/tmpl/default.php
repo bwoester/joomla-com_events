@@ -82,14 +82,18 @@ $eventsModel = $this->eventsModel;
       $date = new DateTime($eventItem->time_start);
     ?>
     <td><?php echo $date->format('d.m.Y'); ?></td>
-    <td>
-      <?php echo $eventItem->title; ?>
-      <?php if ($eventItem->cancelled): ?>
-        <span class="label label-cancelled" title="<?php echo JText::_('COM_EVENTS_EVENT_CANCELLED_DESC'); ?>">
-          <?php echo JText::_('COM_EVENTS_EVENT_CANCELLED_LABEL'); ?>
-        </span>
-      <?php endif; ?>
-    </td>
+    <td><?php
+    
+      echo $eventItem->title;
+    
+      if ($eventItem->cancelled)
+      {
+        echo '<span class="label label-cancelled" title="'.JText::_('COM_EVENTS_EVENT_CANCELLED_DESC').'">';
+        echo JText::_('COM_EVENTS_EVENT_CANCELLED_LABEL');
+        echo '</span>';
+      }
+      
+    ?></td>
     <td><?php echo $eventItem->location; ?></td>
     <td><?php echo $date->format('H:i') . ' Uhr'; ?></td>
   </tr>

@@ -37,6 +37,8 @@ class EventsViewEvents extends JView
 
     $this->eventsModel = $this->getModel( 'events' );
     
+    JHtml::_( 'stylesheet', 'com_events/com_events/com_events.css', array(), true );
+    
     parent::display($tpl);
 	}
 }

@@ -55,7 +55,11 @@ jQuery(document).ready(function() {
     eventRender: function( event, element )
     {
       var spanCancelled = \''.$spanCancelled.'\';
-      element.find(".fc-event-inner").append( spanCancelled );
+      
+      if (event.cancelled) {
+        element.find(".fc-event-inner").append( spanCancelled );
+      }
+      
       element.find(".fc-event-title").qtip({
         content: event.tooltip,
         style: {

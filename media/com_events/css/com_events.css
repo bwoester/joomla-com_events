@@ -11,3 +11,23 @@
   }
   
 }
+
+.label {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;  
+  padding: 2px 4px;
+  margin: 2px 2px;
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 2em;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #999999;
+}
+
+.label-cancelled {
+  background-color: #f89406;
+}

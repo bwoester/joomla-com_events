@@ -47,10 +47,11 @@ class EventsViewEvents extends JView
     {
       $tooltip = $this->generateTooltip( $event );
       $data[] = array(
-        'title'   => $event->title,
-        'start'   => $event->time_start,
-        'end'     => $event->time_end,
-        'tooltip' => $tooltip,
+        'title'     => $event->title,
+        'start'     => $event->time_start,
+        'end'       => $event->time_end,
+        'cancelled' => $event->cancelled ? true : false,
+        'tooltip'   => $tooltip,
       );
     }   
 
