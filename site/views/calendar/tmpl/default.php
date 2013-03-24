@@ -18,7 +18,7 @@ $calendarModel = $this->calendarModel;
 
 JHtml::_( 'stylesheet', 'com_events/fullCalendar/fullcalendar.css', array(), true );
 // TODO
-JHtml::_( 'stylesheet', 'com_events/fullCalendar/fullcalendar.print.css', array(), true );
+// JHtml::_( 'stylesheet', 'com_events/fullCalendar/fullcalendar.print.css', array(), true );
 
 JHtml::_( 'script', 'com_events/qTip/jquery.qtip-1.0.0-rc3.min.js', false, true );
 JHtml::_( 'script', 'com_events/fullCalendar/fullcalendar.min.js', false, true );
@@ -55,11 +55,7 @@ jQuery(document).ready(function() {
     eventRender: function( event, element )
     {
       var spanCancelled = \''.$spanCancelled.'\';
-      
-      if (event.cancelled) {
-        element.find(".fc-event-inner").append( spanCancelled );
-      }
-      
+      element.find(".fc-event-inner").append( spanCancelled );
       element.find(".fc-event-title").qtip({
         content: event.tooltip,
         style: {
