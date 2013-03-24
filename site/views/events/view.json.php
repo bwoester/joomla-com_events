@@ -61,18 +61,42 @@ class EventsViewEvents extends JView
   {
     $timeStart = new DateTime( $event->time_start );
     $strTimeStart = $timeStart->format( DateTimeHelper::GERMAN_FORMAT ) . ' Uhr';
-    return '<dl>
+    $strStatus = '';
+    
+    if ($event->cancelled)
+    {
+      $state          = JText::_('COM_EVENTS_EVENT_LABEL_STATE');
+      $cancelledLabel = JText::_('COM_EVENTS_EVENT_CANCELLED_LABEL');
+      $cancelledDesc  = JText::_('COM_EVENTS_EVENT_CANCELLED_DESC');
       
-      <dt>Was</dt>
-      <dd>'.$event->title.'</dd>
+      $strStatus = <<<STATUS
+  <dt>{$state}</dt>
+  <dd title="{$cancelledDesc}">{$cancelledLabel}</dd>
+STATUS;
+    }
 
-      <dt>Wann</dt>
-      <dd>'.$strTimeStart.'</dd>
+    $what   = JText::_('COM_EVENTS_EVENT_LABEL_WHAT');
+    $when   = JText::_('COM_EVENTS_EVENT_LABEL_WHEN');
+    $where  = JText::_('COM_EVENTS_EVENT_LABEL_WHERE');
+    
+    $tooltip = <<<TOOLTIP
+<dl>
+            
+  {$strStatus}
+  
+  <dt>{$what}</dt>
+  <dd>{$event->title}</dd>
 
-      <dt>Wo</dt>
-      <dd>'.$event->location.'</dd>
+  <dt>{$when}</dt>
+  <dd>{$strTimeStart}</dd>
 
-    </dl>';
+  <dt>{$where}</dt>
+  <dd>{$event->location}</dd>
+
+</dl>
+TOOLTIP;
+      
+    return $tooltip;
   }
 
 }

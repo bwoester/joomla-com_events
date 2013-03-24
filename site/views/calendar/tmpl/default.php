@@ -28,6 +28,10 @@ JHtml::_( 'script', 'com_events/fullCalendar/fullcalendar.min.js', false, true )
 <div class="calendar"></div>
 
 <?php
+$cancelledLabel = JText::_('COM_EVENTS_EVENT_CANCELLED_LABEL');;
+$cancelledDesc  = JText::_('COM_EVENTS_EVENT_CANCELLED_DESC');
+$spanCancelled = "<span class=\"label label-cancelled\" title=\"{$cancelledDesc}\">{$cancelledLabel}</span>";
+
 $doc = JFactory::getDocument();
 $doc->addScriptDeclaration('
 jQuery(document).ready(function() {
@@ -50,12 +54,14 @@ jQuery(document).ready(function() {
     events: "'.$calendarModel->getLinkEvents().'",
     eventRender: function( event, element )
     {
-      element.qtip({
+      var spanCancelled = \''.$spanCancelled.'\';
+      element.find(".fc-event-inner").append( spanCancelled );
+      element.find(".fc-event-title").qtip({
         content: event.tooltip,
         style: {
           tip: "topLeft"
         }
-      });
+      });      
     }
   }, localOptions));
 
