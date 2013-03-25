@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
     dayNamesShort: [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ]
   };
 
-  jQuery("div.calendar").fullCalendar($.extend({
+  jQuery("div.calendar").fullCalendar(jQuery.extend({
     firstDay: 1,
     events: "'.$calendarModel->getLinkEvents().'",
     eventRender: function( event, element )
